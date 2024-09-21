@@ -50,34 +50,32 @@ async function joinMatch( matchID, playerID, playerName) {
 async function SetUpGame() {
   const playerName = 'Alice';
 
-  // 1. ゲームを探す
+  // ゲームを探す
   let matchData = await findAvailableMatch();
   
-  // 2. ゲームが見つからない場合、新しいゲームを作成
+  // ゲームが見つからない場合、新しいゲームを作成
   if (!matchData) {
     matchData = await createNewMatch();
   }
-  // 3. ゲームに参加
-  await joinMatch(
+  //  ゲームに参加
+  const { playerCredentials } = await joinMatch(
     matchData.matchID, 
     matchData.playerID, 
-    playerName
+    playerName,
+    playerCredentials
   );
 
   return matchData;
 }
 
 const App = () => {
-  console.log("aaa")
   const [matchDetails, setMatchDetails] = useState(null);
 
   useEffect(() => {
     const initializeGame = async () => {
       const gameData = await SetUpGame();
       setMatchDetails(gameData);
-      console.log(gameData)
     };
-
     initializeGame();
   }, []);
 
@@ -87,7 +85,7 @@ const App = () => {
 
   return (
     <div>
-      <TicTacToeClient playerID={matchDetails.playerID} matchID={matchDetails.matchID} />
+      <TicTacToeClient credentials={matchDetails.playerCredentials} playerID={matchDetails.playerID} matchID={matchDetails.matchID} />
     </div>
   );
 };
