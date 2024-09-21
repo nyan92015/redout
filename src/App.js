@@ -25,7 +25,7 @@ async function findAvailableMatch() {
 
   if (availableMatch) {
     const openSeat = availableMatch.players.find(player => !player.name);
-    return { matchID: availableMatch.matchID, playerID: openSeat.id };
+    return { matchID: availableMatch.matchID, playerID: String(openSeat.id) };
   }
 
   return null;
