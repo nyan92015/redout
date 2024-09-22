@@ -62,8 +62,9 @@ async function SetUpGame() {
     matchData.matchID, 
     matchData.playerID, 
     playerName,
-    playerCredentials
   );
+
+  matchData.playerCredentials = playerCredentials;
 
   return matchData;
 }
