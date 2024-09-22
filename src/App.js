@@ -6,6 +6,7 @@ import { TicTacToeBoard } from './Board';
 import { createNewMatch, findAvailableMatch, joinMatch } from './services/matchService';
 import Loading from './components/Loading';
 import { SERVER_URL } from './config';
+import Lobby from './components/Lobby';
 
 const TicTacToeClient = Client({
   game: TicTacToe,
