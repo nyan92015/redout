@@ -58,12 +58,12 @@ async function SetUpGame() {
     matchData = await createNewMatch();
   }
   //  ゲームに参加
-  const { playerCredentials } = await joinMatch(
+  const playerCredentials  = await joinMatch(
     matchData.matchID, 
     matchData.playerID, 
     playerName,
   );
-
+    console.log(playerCredentials)
   matchData.playerCredentials = playerCredentials;
 
   return matchData;
