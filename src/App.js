@@ -46,6 +46,7 @@ const App = () => {
     const gameData = await SetUpGame(); // ゲームをセットアップ
     setMatchDetails(gameData); // マッチの詳細を保存
     setLoading(false); 
+    setMatchReady(true);
   };
 
   // ローディング中はローディング画面を表示
