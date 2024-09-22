@@ -3,50 +3,16 @@ import { Client } from 'boardgame.io/react';
 import { SocketIO } from 'boardgame.io/multiplayer';
 import { TicTacToe } from './Game';
 import { TicTacToeBoard } from './Board';
-import { LobbyClient } from 'boardgame.io/client';
+import { createNewMatch, findAvailableMatch, joinMatch } from './services/matchService';
+import Loading from './components/Loading';
+import { SERVER_URL } from './config';
 
-const SERVER_URL = 'https://redout.onrender.com';
-const gameName = 'tic-tac-toe';
-const lobbyClient = new LobbyClient({ server: SERVER_URL });
 const TicTacToeClient = Client({
   game: TicTacToe,
   board: TicTacToeBoard,
   multiplayer: SocketIO({ server: SERVER_URL }),
 });
 
-// 1. ゲームを探す関数
-async function findAvailableMatch() {
-  const { matches } = await lobbyClient.listMatches(gameName);
-
-  // 空いている席があるマッチを探す
-  const availableMatch = matches.find(match => 
-    match.players.some(player => !player.name) // プレイヤーの空席を確認
-  );
-
-  if (availableMatch) {
-    const openSeat = availableMatch.players.find(player => !player.name);
-    return { matchID: availableMatch.matchID, playerID: String(openSeat.id) };
-  }
-
-  return null;
-}
-
-// 2. ゲームを作る関数
-async function createNewMatch(numPlayers = 2) {
-  const { matchID } = await lobbyClient.createMatch(gameName, { numPlayers });
-  return { matchID: matchID, playerID: '0' };
-}
-
-// 3. ゲームに参加する関数
-async function joinMatch( matchID, playerID, playerName) {
-  const { playerCredentials } = await lobbyClient.joinMatch(gameName, matchID, {
-    playerID,
-    playerName
-  });
-  return playerCredentials;
-}
-
-// セットアップゲームのメイン関数
 async function SetUpGame() {
   const playerName = 'Alice';
 
@@ -63,7 +29,6 @@ async function SetUpGame() {
     matchData.playerID, 
     playerName,
   );
-    console.log(playerCredentials)
   matchData.playerCredentials = playerCredentials;
 
   return matchData;
@@ -71,22 +36,50 @@ async function SetUpGame() {
 
 const App = () => {
   const [matchDetails, setMatchDetails] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [matchReady, setMatchReady] = useState(false); 
+
+  // マッチングを初期化する関数
+  const initializeGame = async () => {
+    setLoading(true); // ローディング状態を開始
+    const gameData = await SetUpGame(); // ゲームをセットアップ
+    setMatchDetails(gameData); // マッチの詳細を保存
+  };
 
   useEffect(() => {
-    const initializeGame = async () => {
-      const gameData = await SetUpGame();
-      setMatchDetails(gameData);
+    const socket = TicTacToeClient.getSocket();
+  
+    socket.on('matchJoined', (data) => {
+      console.log(`Joined match ${data.matchID} as player ${data.playerID}`);
+      // ここで対戦画面に遷移する処理を書く
+      setLoading(false);
+      setMatchReady(true);
+    });
+  
+    return () => {
+      socket.off('matchJoined');
     };
-    initializeGame();
   }, []);
 
-  if (!matchDetails) {
-    return <div>Loading...</div>; // ローディング状態
+  // ローディング中はローディング画面を表示
+  if (loading || (matchDetails && !matchReady)) {
+    return <Loading />; // 対戦相手が見つかるまでローディング画面を表示
   }
-  console.log(matchDetails)
+
+  // マッチングが完了したらゲーム画面を表示
+  if (matchReady && matchDetails) {
+    return (
+      <TicTacToeClient
+        credentials={matchDetails.playerCredentials}
+        playerID={matchDetails.playerID}
+        matchID={matchDetails.matchID}
+      />
+    );
+  }
+
   return (
     <div>
-      <TicTacToeClient credentials={matchDetails.playerCredentials} playerID={matchDetails.playerID} matchID={matchDetails.matchID} />
+      <Lobby initializeGame={initializeGame} /> {/* ロビー画面を表示 */}
     </div>
   );
 };
