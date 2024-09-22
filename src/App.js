@@ -83,7 +83,7 @@ const App = () => {
   if (!matchDetails) {
     return <div>Loading...</div>; // ローディング状態
   }
-
+  console.log(matchDetails)
   return (
     <div>
       <TicTacToeClient credentials={matchDetails.playerCredentials} playerID={matchDetails.playerID} matchID={matchDetails.matchID} />
