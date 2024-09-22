@@ -47,21 +47,6 @@ const App = () => {
     setMatchDetails(gameData); // マッチの詳細を保存
   };
 
-  useEffect(() => {
-    const socket = TicTacToeClient.getSocket();
-  
-    socket.on('matchJoined', (data) => {
-      console.log(`Joined match ${data.matchID} as player ${data.playerID}`);
-      // ここで対戦画面に遷移する処理を書く
-      setLoading(false);
-      setMatchReady(true);
-    });
-  
-    return () => {
-      socket.off('matchJoined');
-    };
-  }, []);
-
   // ローディング中はローディング画面を表示
   if (loading || (matchDetails && !matchReady)) {
     return <Loading />; // 対戦相手が見つかるまでローディング画面を表示
