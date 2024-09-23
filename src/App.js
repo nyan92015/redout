@@ -6,8 +6,7 @@ import { Client } from 'boardgame.io/react';
 import { SocketIO } from 'boardgame.io/multiplayer'
 import { TicTacToe } from './Game';
 import { TicTacToeBoard } from './Board';
-import { sendWelcomeMessage } from './services/chatService';
-import { SERVER_URL, client } from './config';
+import { SERVER_URL } from './config';
 
 const TicTacToeClient = Client({
   game: TicTacToe,
@@ -34,27 +33,30 @@ async function SetUpGame() {
   matchData.playerCredentials = playerCredentials;
 
   return matchData;
-}
+
+  }
 
 const App = () => {
   const [matchDetails, setMatchDetails] = useState(null);
-  const [loading, setLoading] = useState(false);
   const [matchReady, setMatchReady] = useState(false); 
+  const [loading, setLoading] = useState(false);
+  const [sendChatMessage, setSendChatMessage] = useState('');
+  const [chatMessages, setChatMessages] = useState();
+  console.log(chatMessages);
+  useEffect(()=>{console.log(chatMessages, "bbb")},[chatMessages])
 
-  console.log(client.chatMessages);
 
   // マッチングを初期化する関数
   const initializeGame = async () => {
     setLoading(true); // ローディング状態を開始
     const gameData = await SetUpGame(); // ゲームをセットアップ
-    if(gameData.playerID == 1){
-      sendWelcomeMessage(gameData.playerName);
-    }
     setMatchDetails(gameData); // マッチの詳細を保存
+    if(gameData.playerID == 1){
+      setSendChatMessage(`${gameData.playerName}が参加しました!`);
+    }
     setLoading(false); 
     setMatchReady(true);
   };
-  useEffect(() =>{console.log(client.chatMessages, "bbb")},[client.chatMessages])
 
   // ローディング中はローディング画面を表示
   if (loading || (matchDetails && !matchReady)) {
@@ -68,6 +70,8 @@ const App = () => {
         credentials={matchDetails.playerCredentials}
         playerID={matchDetails.playerID}
         matchID={matchDetails.matchID}
+        sendChatMessage={sendChatMessage}
+        chatMessages={chatMessages}
       />
     );
   }

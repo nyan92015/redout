@@ -1,8 +1,7 @@
-import { Client, LobbyClient } from 'boardgame.io/client';
+import { LobbyClient } from 'boardgame.io/client';
 
-export const SERVER_URL = 'https://redout.onrender.com';
+export const SERVER_URL = 'localhost:8000';
 export const gameName = 'tic-tac-toe';
 export const lobbyClient = new LobbyClient({ server: SERVER_URL });
-export const client = Client({ server: SERVER_URL });
 
 
