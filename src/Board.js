@@ -4,15 +4,15 @@ import ChatBoard from './components/ChatBoard';
 export function TicTacToeBoard({ ctx, G, moves, sendChatMessage, chatMessages, playerID }) {
   const [showBoard, setShowBoard] = useState(false);
   // プレイヤーIDが '1' の場合に参加メッセージを送信
-  if (playerID === '1') sendChatMessage({ id : 'c11' });
+  if (playerID === '1') sendChatMessage('[PlayerName] has joined the game.');
   console.log(chatMessages)
   useEffect(() => {
     // chatMessagesの変更を監視
     if (chatMessages.length > 0) {
       const latestMessage = chatMessages[chatMessages.length - 1];
       // メッセージの送信者が自分以外ならボードを表示
-      if (latestMessage.id === 'c11') {
-        if(playerID === '0') sendChatMessage({ id : 'c10' })
+      if (latestMessage.sender !== playerID) {
+        if(playerID === '0') sendChatMessage('[PlayerName] has joined the game.')
         setShowBoard(true);
       }
     }
