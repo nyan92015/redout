@@ -52,8 +52,8 @@ const App = () => {
     const gameData = await SetUpGame(); // ゲームをセットアップ
     setMatchDetails(gameData); // マッチの詳細を保存
     if(gameData.playerID === '1'){
-      console.log(gameData.playerName)
-      setSendChatMessage(`${gameData.playerName}が参加しました!`);
+      console.log(gameData.playerID)
+      setSendChatMessage(`${gameData.playerID}が参加しました!`);
     }
     setLoading(false); 
     setMatchReady(true);
