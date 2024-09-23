@@ -16,7 +16,7 @@ const ChatBoard = ({ chatMessages, sendChatMessage }) => {
       {/* メッセージ表示エリア */}
       <ul>
         {chatMessages.map((msg, index) => (
-          <li key={index}>{msg.sender}: {msg.payload.message} </li> // チャットメッセージをリストとして表示
+          <li key={index}>{msg.sender}: {msg.payload} </li> // チャットメッセージをリストとして表示
         ))}
       </ul>
 
