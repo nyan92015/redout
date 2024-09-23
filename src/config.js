@@ -1,4 +1,5 @@
-import { LobbyClient } from 'boardgame.io/client';
+import { Client, LobbyClient } from 'boardgame.io/client';
+import { SocketIO } from 'boardgame.io/multiplayer'
 import { TicTacToe } from './Game';
 import { TicTacToeBoard } from './Board';
 
