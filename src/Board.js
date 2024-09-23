@@ -3,19 +3,16 @@ import ChatBoard from './components/ChatBoard';
 
 export function TicTacToeBoard({ ctx, G, moves, sendChatMessage, chatMessages, playerID }) {
   const [showBoard, setShowBoard] = useState(false);
-
+  // プレイヤーIDが '1' の場合に参加メッセージを送信
+  if (playerID === '1') sendChatMessage({ id : 'c11' });
+  console.log(chatMessages)
   useEffect(() => {
-    // プレイヤーIDが '1' の場合に参加メッセージを送信
-    if (playerID === '1') {
-      sendChatMessage(`[Player ${playerID}] has joined the game.`);
-    }
-
     // chatMessagesの変更を監視
     if (chatMessages.length > 0) {
       const latestMessage = chatMessages[chatMessages.length - 1];
-      
       // メッセージの送信者が自分以外ならボードを表示
-      if (latestMessage.sender !== playerID) {
+      if (latestMessage.id === 'c11') {
+        if(playerID === '0') sendChatMessage({ id : 'c10' })
         setShowBoard(true);
       }
     }
