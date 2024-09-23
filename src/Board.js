@@ -2,21 +2,22 @@ import React, { useEffect, useState } from 'react';
 import ChatBoard from './components/ChatBoard';
 
 export function TicTacToeBoard({ ctx, G, moves, sendChatMessage, chatMessages, playerID }) {
-  const [showBoard, setShowBoard] = useState(false);
-  // プレイヤーIDが '1' の場合に参加メッセージを送信
-  if (playerID === '1') sendChatMessage('[PlayerName] has joined the game.');
-  console.log(chatMessages)
-  useEffect(() => {
-    // chatMessagesの変更を監視
-    if (chatMessages.length > 0) {
-      const latestMessage = chatMessages[chatMessages.length - 1];
-      // メッセージの送信者が自分以外ならボードを表示
-      if (latestMessage.sender !== playerID) {
-        if(playerID === '0') sendChatMessage('[PlayerName] has joined the game.')
-        setShowBoard(true);
-      }
+  const [playerJoined, setPlayerJoined] = useState(false);
+
+  if (playerID === '1' && !playerJoined) {
+    sendChatMessage('[PlayerName] has joined the game.');
+    setPlayerJoined(true);
+  }
+
+  if (chatMessages.length > 0) {
+    const latestMessage = chatMessages[chatMessages.length - 1];
+    // メッセージの送信者が自分以外ならボードを表示
+    if (latestMessage.sender !== playerID) {
+      if(playerID === '0' && !playerJoined) sendChatMessage('[PlayerName] has joined the game.')
+      setPlayerJoined(true);
     }
-  }, [chatMessages, playerID, sendChatMessage]);
+  }
+  console.log(chatMessages)
 
   const onClick = (id) => moves.clickCell(id);
   let winner = '';
@@ -58,7 +59,7 @@ export function TicTacToeBoard({ ctx, G, moves, sendChatMessage, chatMessages, p
   return (
     <div>
       <ChatBoard chatMessages={chatMessages} sendChatMessage={sendChatMessage} />
-      {showBoard && (
+      {playerJoined && (
         <table id="board">
           <tbody>{tbody}</tbody>
         </table>
