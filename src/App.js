@@ -40,10 +40,6 @@ const App = () => {
   const [matchDetails, setMatchDetails] = useState(null);
   const [matchReady, setMatchReady] = useState(false); 
   const [loading, setLoading] = useState(false);
-  const [sendChatMessage, setSendChatMessage] = useState('');
-  const [chatMessages, setChatMessages] = useState();
-  console.log(chatMessages);
-  useEffect(()=>{console.log(chatMessages, "bbb")},[chatMessages])
 
 
   // マッチングを初期化する関数
@@ -51,10 +47,6 @@ const App = () => {
     setLoading(true); // ローディング状態を開始
     const gameData = await SetUpGame(); // ゲームをセットアップ
     setMatchDetails(gameData); // マッチの詳細を保存
-    if(gameData.playerID === '1'){
-      console.log(gameData.playerID)
-      setSendChatMessage(`${gameData.playerID}が参加しました!`);
-    }
     setLoading(false); 
     setMatchReady(true);
   };
@@ -71,8 +63,6 @@ const App = () => {
         credentials={matchDetails.playerCredentials}
         playerID={matchDetails.playerID}
         matchID={matchDetails.matchID}
-        sendChatMessage={sendChatMessage}
-        chatMessages={chatMessages}
       />
     );
   }

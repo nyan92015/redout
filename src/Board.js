@@ -1,6 +1,7 @@
 import React from 'react';
+import ChatBoard from './components/ChatBoard';
 
-export function TicTacToeBoard({ ctx, G, moves }) {
+export function TicTacToeBoard({ ctx, G, moves, sendChatMessage, chatMessages }) {
   const onClick = (id) => moves.clickCell(id);
   let winner = '';
   if (ctx.gameover) {
@@ -40,6 +41,7 @@ export function TicTacToeBoard({ ctx, G, moves }) {
 
   return (
     <div>
+      <ChatBoard chatMessages={chatMessages} sendChatMessage={sendChatMessage} />
       <table id="board">
         <tbody>{tbody}</tbody>
       </table>
