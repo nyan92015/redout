@@ -10,13 +10,13 @@ const ChatBoard = ({ chatMessages, sendChatMessage }) => {
       setMessage(''); // 入力フィールドをリセット
     }
   };
-
+  console.log(chatMessages);
   return (
     <div>
       {/* メッセージ表示エリア */}
       <ul>
         {chatMessages.map((msg, index) => (
-          <li key={index}>{msg}</li> // チャットメッセージをリストとして表示
+          <li key={index}>{msg.sender}: {msg.payload.message} </li> // チャットメッセージをリストとして表示
         ))}
       </ul>
 
