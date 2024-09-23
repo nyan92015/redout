@@ -2,7 +2,6 @@ import React from 'react';
 
 export function TicTacToeBoard({ ctx, G, moves }) {
   const onClick = (id) => moves.clickCell(id);
-
   let winner = '';
   if (ctx.gameover) {
     winner =

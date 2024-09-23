@@ -1,5 +1,5 @@
-import { TicTacToeClient } from "../config";
+import { client } from "../config";
 
-export async function sendWelcomeMessage(playerName) {
-    TicTacToeClient.sendChatMessage(`${playerName}が参加しました！`)
+export async function sendWelcomeMessage(playerName, matchData) {
+    client.sendChatMessage({message: `${playerName}が参加しました！`, matchID: matchData.matchID})
 }

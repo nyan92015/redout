@@ -2,8 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { createNewMatch, findAvailableMatch, joinMatch } from './services/matchService';
 import Loading from './components/Loading';
 import Lobby from './components/Lobby';
-import { TicTacToeClient } from './config';
+import { Client } from 'boardgame.io/react';
+import { SocketIO } from 'boardgame.io/multiplayer'
+import { TicTacToe } from './Game';
+import { TicTacToeBoard } from './Board';
 import { sendWelcomeMessage } from './services/chatService';
+import { client } from './config';
+
+const TicTacToeClient = Client({
+  game: TicTacToe,
+  board: TicTacToeBoard,
+  multiplayer: SocketIO({ server: SERVER_URL }),
+});
 
 async function SetUpGame() {
   const playerName = 'Alice';
@@ -31,8 +41,7 @@ const App = () => {
   const [loading, setLoading] = useState(false);
   const [matchReady, setMatchReady] = useState(false); 
 
-  const chatMessage = TicTacToeClient.chatMessages;
-  console.log(chatMessage);
+  console.log(client.chatMessages);
 
   // マッチングを初期化する関数
   const initializeGame = async () => {
@@ -45,7 +54,7 @@ const App = () => {
     setLoading(false); 
     setMatchReady(true);
   };
-  useEffect(() =>{console.log(chatMessage, "bbb")},[chatMessage])
+  useEffect(() =>{console.log(chatMessage, "bbb")},[client.chatMessages])
 
   // ローディング中はローディング画面を表示
   if (loading || (matchDetails && !matchReady)) {
