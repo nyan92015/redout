@@ -7,7 +7,7 @@ import { SocketIO } from 'boardgame.io/multiplayer'
 import { TicTacToe } from './Game';
 import { TicTacToeBoard } from './Board';
 import { sendWelcomeMessage } from './services/chatService';
-import { client } from './config';
+import { SERVER_URL, client } from './config';
 
 const TicTacToeClient = Client({
   game: TicTacToe,
@@ -54,7 +54,7 @@ const App = () => {
     setLoading(false); 
     setMatchReady(true);
   };
-  useEffect(() =>{console.log(chatMessage, "bbb")},[client.chatMessages])
+  useEffect(() =>{console.log(client.chatMessages, "bbb")},[client.chatMessages])
 
   // ローディング中はローディング画面を表示
   if (loading || (matchDetails && !matchReady)) {
