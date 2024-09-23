@@ -1,7 +1,26 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ChatBoard from './components/ChatBoard';
 
-export function TicTacToeBoard({ ctx, G, moves, sendChatMessage, chatMessages }) {
+export function TicTacToeBoard({ ctx, G, moves, sendChatMessage, chatMessages, playerID }) {
+  const [showBoard, setShowBoard] = useState(false);
+
+  useEffect(() => {
+    // プレイヤーIDが '1' の場合に参加メッセージを送信
+    if (playerID === '1') {
+      sendChatMessage(`[Player ${playerID}] has joined the game.`);
+    }
+
+    // chatMessagesの変更を監視
+    if (chatMessages.length > 0) {
+      const latestMessage = chatMessages[chatMessages.length - 1];
+      
+      // メッセージの送信者が自分以外ならボードを表示
+      if (latestMessage.sender !== playerID) {
+        setShowBoard(true);
+      }
+    }
+  }, [chatMessages, playerID, sendChatMessage]);
+
   const onClick = (id) => moves.clickCell(id);
   let winner = '';
   if (ctx.gameover) {
@@ -42,9 +61,11 @@ export function TicTacToeBoard({ ctx, G, moves, sendChatMessage, chatMessages })
   return (
     <div>
       <ChatBoard chatMessages={chatMessages} sendChatMessage={sendChatMessage} />
-      <table id="board">
-        <tbody>{tbody}</tbody>
-      </table>
+      {showBoard && (
+        <table id="board">
+          <tbody>{tbody}</tbody>
+        </table>
+      )}
       {winner}
     </div>
   );
