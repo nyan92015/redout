@@ -18,7 +18,7 @@ export function TicTacToeBoard({
   }
   if (chatMessages.length > 0) {
     const latestMessage = chatMessages[chatMessages.length - 1];
-    if (playerID == '0' && latestMessage.sender === '1' && !playerJoined) {
+    if (playerID === '0' && latestMessage.sender === '1' && !playerJoined) {
       sendChatMessage({ senderName: playerName, message: `${playerName} has joined the game.` });
       setPlayerJoined(true);
     }

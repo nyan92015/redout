@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import EnterNamePage from './pages/EnterNamePage';
 import LobbyPage from './pages/LobbyPage';
 import GamePage from './pages/GamePage';
