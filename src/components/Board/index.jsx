@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Toaster, toast } from 'sonner';
-import Loading from './components/Loading';
+import Loading from '../Loading';
 
 export function TicTacToeBoard({
   ctx,

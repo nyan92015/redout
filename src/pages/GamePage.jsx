@@ -1,7 +1,7 @@
 import React from 'react';
 import Loading from '../components/Loading';
-import { TicTacToe } from '../Game';
-import { TicTacToeBoard } from '../Board';
+import { TicTacToe } from '../components/Game';
+import { TicTacToeBoard } from '../components/Board';
 import { SERVER_URL } from '../config';
 import { Client } from 'boardgame.io/react';
 import { SocketIO } from 'boardgame.io/multiplayer';
