@@ -25,7 +25,8 @@ export function TicTacToeBoard({
   }
 
   useEffect(() => {
-    if (chatMessages.length > 0) toast.success(chatMessages[chatMessages.length - 1].payload.message)
+    if (chatMessages.length > 0 && chatMessages[chatMessages.length - 1].sender !== playerID)
+      toast.success(chatMessages[chatMessages.length - 1].payload.message);
   }, [chatMessages]);
   const onClick = (id) => moves.clickCell(id);
   let winner = '';
@@ -68,12 +69,14 @@ export function TicTacToeBoard({
     <div>
       {playerJoined ? (
         <div>
-        <table id="board">
-          <tbody>{tbody}</tbody>
-        </table>
-        {winner}
+          <table id="board">
+            <tbody>{tbody}</tbody>
+          </table>
+          {winner}
         </div>
-      ) : <Loading/>}
+      ) : (
+        <Loading />
+      )}
       <Toaster position="top-center" richColors />
     </div>
   );

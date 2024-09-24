@@ -1,31 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { createNewMatch, findAvailableMatch, joinMatch } from './services/matchService';
-import Loading from './components/Loading';
-import Lobby from './components/Lobby';
-import { Client } from 'boardgame.io/react';
-import { SocketIO } from 'boardgame.io/multiplayer';
-import { TicTacToe } from './Game';
-import { TicTacToeBoard } from './Board';
-import { SERVER_URL } from './config';
+import EnterNamePage from './pages/EnterNamePage';
+import LobbyPage from './pages/LobbyPage';
+import GamePage from './pages/GamePage';
 
-const TicTacToeClient = Client({
-  game: TicTacToe,
-  board: TicTacToeBoard,
-  multiplayer: SocketIO({ server: SERVER_URL }),
-  loading: Loading,
-});
-
-async function SetUpGame() {
-  const playerName = 'Alice';
-
-  // ゲームを探す
+async function SetUpGame(playerName) {
   let matchData = await findAvailableMatch();
 
-  // ゲームが見つからない場合、新しいゲームを作成
   if (!matchData) {
     matchData = await createNewMatch();
   }
-  //  ゲームに参加
+
   const playerCredentials = await joinMatch(matchData.matchID, matchData.playerID, playerName);
   matchData.playerName = playerName;
   matchData.playerCredentials = playerCredentials;
@@ -35,40 +21,21 @@ async function SetUpGame() {
 
 const App = () => {
   const [matchDetails, setMatchDetails] = useState(null);
-  const [matchReady, setMatchReady] = useState(false);
-  const [loading, setLoading] = useState(false);
 
-  console.log(matchDetails);
-  // マッチングを初期化する関数
   const initializeGame = async () => {
-    setLoading(true); // ローディング状態を開始
-    const gameData = await SetUpGame(); // ゲームをセットアップ
-    setMatchDetails(gameData); // マッチの詳細を保存
-    setLoading(false);
-    setMatchReady(true);
+    const gameData = await SetUpGame(matchDetails.playerName);
+    setMatchDetails(gameData);
+    Navigate('/game'); // ゲーム画面へ遷移
   };
 
-  // ローディング中はローディング画面を表示
-  if (loading || (matchDetails && !matchReady)) {
-    return <Loading />; // 対戦相手が見つかるまでローディング画面を表示
-  }
-
-  // マッチングが完了したらゲーム画面を表示
-  if (matchReady && matchDetails) {
-    return (
-      <TicTacToeClient
-        credentials={matchDetails.playerCredentials}
-        playerID={matchDetails.playerID}
-        playerName={matchDetails.playerName}
-        matchID={matchDetails.matchID}
-      />
-    );
-  }
-
   return (
-    <div>
-      <Lobby initializeGame={initializeGame} /> {/* ロビー画面を表示 */}
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<EnterNamePage setMatchDetails={setMatchDetails} />} />
+        <Route path="/lobby" element={<LobbyPage initializeGame={initializeGame} />} />
+        <Route path="/game" element={<GamePage matchDetails={matchDetails} />} />
+      </Routes>
+    </Router>
   );
 };
 
