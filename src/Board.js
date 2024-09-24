@@ -25,7 +25,7 @@ export function TicTacToeBoard({
   }
 
   useEffect(() => {
-    toast.success(chatMessages[chatMessages.length - 1].payload.message)
+    if (chatMessages.length > 0) toast.success(chatMessages[chatMessages.length - 1].payload.message)
   }, [chatMessages]);
   const onClick = (id) => moves.clickCell(id);
   let winner = '';
