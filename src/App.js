@@ -42,7 +42,7 @@ const App = () => {
   const [matchReady, setMatchReady] = useState(false); 
   const [loading, setLoading] = useState(false);
 
-  console.log(playerName)
+  console.log(matchDetails)
   // マッチングを初期化する関数
   const initializeGame = async () => {
     setLoading(true); // ローディング状態を開始
