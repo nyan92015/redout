@@ -3,7 +3,7 @@ import { createNewMatch, findAvailableMatch, joinMatch } from './services/matchS
 import Loading from './components/Loading';
 import Lobby from './components/Lobby';
 import { Client } from 'boardgame.io/react';
-import { SocketIO } from 'boardgame.io/multiplayer'
+import { SocketIO } from 'boardgame.io/multiplayer';
 import { TicTacToe } from './Game';
 import { TicTacToeBoard } from './Board';
 import { SERVER_URL } from './config';
@@ -12,7 +12,7 @@ const TicTacToeClient = Client({
   game: TicTacToe,
   board: TicTacToeBoard,
   multiplayer: SocketIO({ server: SERVER_URL }),
-  loading: Loading
+  loading: Loading,
 });
 
 async function SetUpGame() {
@@ -20,35 +20,31 @@ async function SetUpGame() {
 
   // ゲームを探す
   let matchData = await findAvailableMatch();
-  
+
   // ゲームが見つからない場合、新しいゲームを作成
   if (!matchData) {
     matchData = await createNewMatch();
   }
   //  ゲームに参加
-  const playerCredentials  = await joinMatch(
-    matchData.matchID, 
-    matchData.playerID, 
-    playerName,
-  );
+  const playerCredentials = await joinMatch(matchData.matchID, matchData.playerID, playerName);
+  matchData.playerName = playerName;
   matchData.playerCredentials = playerCredentials;
 
   return matchData;
-
-  }
+}
 
 const App = () => {
   const [matchDetails, setMatchDetails] = useState(null);
-  const [matchReady, setMatchReady] = useState(false); 
+  const [matchReady, setMatchReady] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  console.log(matchDetails)
+  console.log(matchDetails);
   // マッチングを初期化する関数
   const initializeGame = async () => {
     setLoading(true); // ローディング状態を開始
     const gameData = await SetUpGame(); // ゲームをセットアップ
     setMatchDetails(gameData); // マッチの詳細を保存
-    setLoading(false); 
+    setLoading(false);
     setMatchReady(true);
   };
 

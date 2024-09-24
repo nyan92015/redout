@@ -1,19 +1,32 @@
 import React, { useEffect, useState } from 'react';
+import { Toaster, toast } from 'sonner';
 
-export function TicTacToeBoard({ ctx, G, moves, sendChatMessage, chatMessages, playerID, playerName }) {
+export function TicTacToeBoard({
+  ctx,
+  G,
+  moves,
+  sendChatMessage,
+  chatMessages,
+  playerID,
+  playerName,
+}) {
   const [playerJoined, setPlayerJoined] = useState(false);
-  console.log(ctx, playerName)
+  console.log(ctx, playerName);
   if (playerID === '1' && !playerJoined) {
-    sendChatMessage(`${ctx.playerName} has joined the game.`);
+    sendChatMessage(`${playerName} has joined the game.`);
     setPlayerJoined(true);
   }
   if (chatMessages.length > 0) {
     const latestMessage = chatMessages[chatMessages.length - 1];
     if (playerID == '0' && latestMessage.sender === '1' && !playerJoined) {
-        sendChatMessage(`${ctx.playerName} has joined the game.`);
-        setPlayerJoined(true);
+      sendChatMessage(`${playerName} has joined the game.`);
+      setPlayerJoined(true);
     }
   }
+
+  useEffect(() => {
+    toast.success(chatMessages[chatMessages.length - 1].payload);
+  }, [chatMessages]);
   const onClick = (id) => moves.clickCell(id);
   let winner = '';
   if (ctx.gameover) {
@@ -45,7 +58,7 @@ export function TicTacToeBoard({ ctx, G, moves, sendChatMessage, chatMessages, p
           ) : (
             <button style={cellStyle} onClick={() => onClick(id)} />
           )}
-        </td>
+        </td>,
       );
     }
     tbody.push(<tr key={i}>{cells}</tr>);
@@ -59,6 +72,7 @@ export function TicTacToeBoard({ ctx, G, moves, sendChatMessage, chatMessages, p
         </table>
       )}
       {winner}
+      <Toaster position="top-center" richColors />
     </div>
   );
 }
