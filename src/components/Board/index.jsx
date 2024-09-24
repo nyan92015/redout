@@ -11,6 +11,7 @@ export function TicTacToeBoard({
   playerID,
   playerName,
 }) {
+  console.log(playerName)
   const [playerJoined, setPlayerJoined] = useState(false);
   if (playerID === '1' && !playerJoined) {
     sendChatMessage({ senderName: playerName, message: `${playerName} has joined the game.` });

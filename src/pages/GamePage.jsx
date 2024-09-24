@@ -11,6 +11,8 @@ const GamePage = ({ matchDetails }) => {
     return <Loading />;
   }
 
+  console.log(matchDetails)
+
   const TicTacToeClient = Client({
     game: TicTacToe,
     board: TicTacToeBoard,
