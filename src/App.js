@@ -12,6 +12,7 @@ const TicTacToeClient = Client({
   game: TicTacToe,
   board: TicTacToeBoard,
   multiplayer: SocketIO({ server: SERVER_URL }),
+  loading: Loading
 });
 
 async function SetUpGame() {
@@ -62,6 +63,7 @@ const App = () => {
       <TicTacToeClient
         credentials={matchDetails.playerCredentials}
         playerID={matchDetails.playerID}
+        playerName={'Alice'}
         matchID={matchDetails.matchID}
       />
     );

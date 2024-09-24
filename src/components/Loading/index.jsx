@@ -1,11 +1,15 @@
 import React from 'react';
+import { ThreeDots } from 'react-loader-spinner';
 
 const Loading = () => {
   return (
-    <div>
-      <h2>Looking for a match...</h2>
-      <p>Please wait while we find an opponent.</p>
-    </div>
+    <ThreeDots
+    visible={true}
+    height="80"
+    width="80"
+    color="#4fa94d"
+    radius="9"
+    />
   );
 };
 
