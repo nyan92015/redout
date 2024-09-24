@@ -5,8 +5,6 @@ import { useNavigate } from 'react-router-dom';
 const LobbyPage = ({ matchDetails, setMatchDetails }) => {
   const navigate = useNavigate();
   const setUpGame = async () => {
-    console.log(matchDetails)
-    navigate('/game');
     let matchData = await findAvailableMatch();
 
     if (!matchData) {
@@ -20,6 +18,7 @@ const LobbyPage = ({ matchDetails, setMatchDetails }) => {
     );
     matchData.playerCredentials = playerCredentials;
     setMatchDetails(matchData);
+    navigate('/game');
   };
 
   return (
