@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import ChatBoard from './components/ChatBoard';
 
-export function TicTacToeBoard({ ctx, G, moves, sendChatMessage, chatMessages, playerID }) {
+export function TicTacToeBoard({ ctx, G, moves, sendChatMessage, chatMessages, playerID, playerName }) {
   const [playerJoined, setPlayerJoined] = useState(false);
-  console.log(ctx)
+  console.log(ctx, playerName)
   if (playerID === '1' && !playerJoined) {
     sendChatMessage(`${ctx.playerName} has joined the game.`);
     setPlayerJoined(true);
   }
   if (chatMessages.length > 0) {
     const latestMessage = chatMessages[chatMessages.length - 1];
-    // メッセージの送信者が自分以外ならボードを表示
     if (playerID == '0' && latestMessage.sender === '1' && !playerJoined) {
         sendChatMessage(`${ctx.playerName} has joined the game.`);
         setPlayerJoined(true);

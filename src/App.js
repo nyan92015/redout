@@ -42,7 +42,7 @@ const App = () => {
   const [matchReady, setMatchReady] = useState(false); 
   const [loading, setLoading] = useState(false);
 
-
+  console.log(playerName)
   // マッチングを初期化する関数
   const initializeGame = async () => {
     setLoading(true); // ローディング状態を開始
@@ -63,7 +63,7 @@ const App = () => {
       <TicTacToeClient
         credentials={matchDetails.playerCredentials}
         playerID={matchDetails.playerID}
-        playerName={'Alice'}
+        playerName={matchDetails.playerName}
         matchID={matchDetails.matchID}
       />
     );
