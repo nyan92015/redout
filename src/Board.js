@@ -3,7 +3,7 @@ import ChatBoard from './components/ChatBoard';
 
 export function TicTacToeBoard({ ctx, G, moves, sendChatMessage, chatMessages, playerID }) {
   const [playerJoined, setPlayerJoined] = useState(false);
-
+  console.log(playerJoined)
   if (playerID === '1' && !playerJoined) {
     sendChatMessage('[PlayerName] has joined the game.');
     setPlayerJoined(true);
@@ -12,9 +12,9 @@ export function TicTacToeBoard({ ctx, G, moves, sendChatMessage, chatMessages, p
   if (chatMessages.length > 0) {
     const latestMessage = chatMessages[chatMessages.length - 1];
     // メッセージの送信者が自分以外ならボードを表示
-    if (latestMessage.sender !== playerID) {
-      if(playerID === '0' && !playerJoined) sendChatMessage('[PlayerName] has joined the game.')
-      setPlayerJoined(true);
+    if (playerID == '0' && latestMessage.sender === '1' && !playerJoined) {
+        sendChatMessage('[PlayerName] has joined the game.');
+        setPlayerJoined(true);
     }
   }
   console.log(chatMessages)
