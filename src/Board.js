@@ -3,22 +3,19 @@ import ChatBoard from './components/ChatBoard';
 
 export function TicTacToeBoard({ ctx, G, moves, sendChatMessage, chatMessages, playerID }) {
   const [playerJoined, setPlayerJoined] = useState(false);
-  console.log(playerJoined)
+  console.log(ctx)
   if (playerID === '1' && !playerJoined) {
-    sendChatMessage('[PlayerName] has joined the game.');
+    sendChatMessage(`${ctx.playerName} has joined the game.`);
     setPlayerJoined(true);
   }
-
   if (chatMessages.length > 0) {
     const latestMessage = chatMessages[chatMessages.length - 1];
     // メッセージの送信者が自分以外ならボードを表示
     if (playerID == '0' && latestMessage.sender === '1' && !playerJoined) {
-        sendChatMessage('[PlayerName] has joined the game.');
+        sendChatMessage(`${ctx.playerName} has joined the game.`);
         setPlayerJoined(true);
     }
   }
-  console.log(chatMessages)
-
   const onClick = (id) => moves.clickCell(id);
   let winner = '';
   if (ctx.gameover) {
@@ -58,7 +55,6 @@ export function TicTacToeBoard({ ctx, G, moves, sendChatMessage, chatMessages, p
 
   return (
     <div>
-      <ChatBoard chatMessages={chatMessages} sendChatMessage={sendChatMessage} />
       {playerJoined && (
         <table id="board">
           <tbody>{tbody}</tbody>
