@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const EnterNamePage = ({ setMatchDetails }) => {
+const EnterNamePage = ({ matchDetails, setMatchDetails }) => {
   const [name, setName] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setMatchDetails(name);
+    setMatchDetails({...matchDetails, name});
     navigate('/lobby'); // ロビー画面へ遷移
   };
 

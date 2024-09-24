@@ -10,7 +10,7 @@ const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<EnterNamePage setMatchDetails={setMatchDetails} />} />
+        <Route path="/" element={<EnterNamePage matchDetails={matchDetails} setMatchDetails={setMatchDetails} />} />
         <Route
           path="/lobby"
           element={<LobbyPage matchDetails={matchDetails} setMatchDetails={setMatchDetails} />}
