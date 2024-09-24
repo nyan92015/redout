@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import { createNewMatch, findAvailableMatch, joinMatch } from './services/matchService';
 import EnterNamePage from './pages/EnterNamePage';
 import LobbyPage from './pages/LobbyPage';
@@ -21,11 +21,12 @@ async function SetUpGame(playerName) {
 
 const App = () => {
   const [matchDetails, setMatchDetails] = useState(null);
+  const navigate = useNavigate();
 
   const initializeGame = async () => {
     const gameData = await SetUpGame(matchDetails.playerName);
     setMatchDetails(gameData);
-    Navigate('/game'); // ゲーム画面へ遷移
+    navigate('/game'); // ゲーム画面へ遷移
   };
 
   return (
