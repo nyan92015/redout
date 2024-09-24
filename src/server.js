@@ -1,6 +1,6 @@
 import { Server } from 'boardgame.io/server';
 import serve from 'koa-static';
-import { TicTacToe } from './components/Game/Game';
+import { TicTacToe } from './components/Game';
 
 const server = Server({
   name: 'tic-tac-toe',
