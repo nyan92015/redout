@@ -17,7 +17,7 @@ const LobbyPage = ({ matchDetails, setMatchDetails }) => {
       matchDetails.playerName,
     );
     matchData.playerCredentials = playerCredentials;
-    setMatchDetails(matchData);
+    setMatchDetails({...matchDetails, matchData});
     navigate('/game');
   };
 
