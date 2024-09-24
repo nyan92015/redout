@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const EnterNamePage = ({ matchDetails, setMatchDetails }) => {
-  const [name, setName] = useState('');
+  const [playerName, setPlayerName] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setMatchDetails({...matchDetails, name});
+    setMatchDetails({...matchDetails, playerName});
     navigate('/lobby'); // ロビー画面へ遷移
   };
 
@@ -17,8 +17,8 @@ const EnterNamePage = ({ matchDetails, setMatchDetails }) => {
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          value={playerName}
+          onChange={(e) => setPlayerName(e.target.value)}
           placeholder="Enter your name"
         />
         <button type="submit">Join Lobby</button>
