@@ -10,7 +10,6 @@ const ChatBoard = ({ chatMessages, sendChatMessage }) => {
       setMessage(''); // 入力フィールドをリセット
     }
   };
-  console.log(chatMessages);
   return (
     <div>
       {/* メッセージ表示エリア */}

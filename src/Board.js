@@ -11,21 +11,21 @@ export function TicTacToeBoard({
   playerName,
 }) {
   const [playerJoined, setPlayerJoined] = useState(false);
-  console.log(ctx, playerName);
+  console.log(chatMessages);
   if (playerID === '1' && !playerJoined) {
-    sendChatMessage(`${playerName} has joined the game.`);
+    sendChatMessage({ senderName: playerName, message: `${playerName} has joined the game.` });
     setPlayerJoined(true);
   }
   if (chatMessages.length > 0) {
     const latestMessage = chatMessages[chatMessages.length - 1];
     if (playerID == '0' && latestMessage.sender === '1' && !playerJoined) {
-      sendChatMessage(`${playerName} has joined the game.`);
+      sendChatMessage({ senderName: playerName, message: `${playerName} has joined the game.` });
       setPlayerJoined(true);
     }
   }
 
   useEffect(() => {
-    toast.success(chatMessages[chatMessages.length - 1].payload);
+    toast.success(chatMessages[chatMessages.length - 1].payload.message);
   }, [chatMessages]);
   const onClick = (id) => moves.clickCell(id);
   let winner = '';
