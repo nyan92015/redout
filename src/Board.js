@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Toaster, toast } from 'sonner';
+import Loading from './components/Loading';
 
 export function TicTacToeBoard({
   ctx,
@@ -24,7 +25,7 @@ export function TicTacToeBoard({
   }
 
   useEffect(() => {
-    console.log(chatMessages)
+    toast.success(chatMessages[chatMessages.length - 1].payload.message)
   }, [chatMessages]);
   const onClick = (id) => moves.clickCell(id);
   let winner = '';
@@ -65,12 +66,14 @@ export function TicTacToeBoard({
 
   return (
     <div>
-      {playerJoined && (
+      {playerJoined ? (
+        <div>
         <table id="board">
           <tbody>{tbody}</tbody>
         </table>
-      )}
-      {winner}
+        {winner}
+        </div>
+      ) : <Loading/>}
       <Toaster position="top-center" richColors />
     </div>
   );
