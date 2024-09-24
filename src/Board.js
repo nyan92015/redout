@@ -11,7 +11,6 @@ export function TicTacToeBoard({
   playerName,
 }) {
   const [playerJoined, setPlayerJoined] = useState(false);
-  console.log(chatMessages);
   if (playerID === '1' && !playerJoined) {
     sendChatMessage({ senderName: playerName, message: `${playerName} has joined the game.` });
     setPlayerJoined(true);
@@ -25,7 +24,7 @@ export function TicTacToeBoard({
   }
 
   useEffect(() => {
-    toast.success(chatMessages[chatMessages.length - 1].payload.message);
+    console.log(chatMessages)
   }, [chatMessages]);
   const onClick = (id) => moves.clickCell(id);
   let winner = '';
