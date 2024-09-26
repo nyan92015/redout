@@ -8,9 +8,7 @@ export async function findAvailableMatch() {
     const { matches } = await lobbyClient.listMatches(gameName);
 
     // 空いている席があるマッチを探す
-    const availableMatch = matches.find(
-      (match) => match.players.some((player) => !player.name)
-    );
+    const availableMatch = matches.find((match) => match.players.some((player) => !player.name));
 
     if (availableMatch) {
       const openSeat = availableMatch.players.find((player) => !player.name);
@@ -31,7 +29,7 @@ export async function findAvailableMatch() {
 export async function createNewMatch(numPlayers = 2) {
   try {
     const { matchID } = await lobbyClient.createMatch(gameName, { numPlayers });
-    return { matchID, playerID: '0' }; 
+    return { matchID, playerID: '0' };
   } catch (error) {
     console.error('Error creating match:', error);
     throw error;

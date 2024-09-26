@@ -4,17 +4,22 @@ import EnterNamePage from './pages/EnterNamePage';
 import LobbyPage from './pages/LobbyPage';
 import GamePage from './pages/GamePage';
 import { AnimatePresence } from 'framer-motion';
-import { leaveMatch } from './services/matchService'; 
+import { leaveMatch } from './services/matchService';
 
 const App = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [matchDetails, setMatchDetails] = useState({ playerName: 'guest', playerID: null, matchID: null, playerCredentials: null });
+  const [matchDetails, setMatchDetails] = useState({
+    playerName: 'guest',
+    playerID: null,
+    matchID: null,
+    playerCredentials: null,
+  });
 
   useEffect(() => {
     if (location.pathname !== '/game' && matchDetails.matchID) {
       const { matchID, playerID, playerCredentials } = matchDetails;
-      leaveMatch(matchID, playerID, playerCredentials)
+      leaveMatch(matchID, playerID, playerCredentials);
     }
   }, [location.pathname, matchDetails.matchID, matchDetails.playerCredentials]);
 
@@ -29,10 +34,7 @@ const App = () => {
           path="/lobby"
           element={<LobbyPage matchDetails={matchDetails} setMatchDetails={setMatchDetails} />}
         />
-        <Route
-          path="/game"
-          element={<GamePage matchDetails={matchDetails} />}
-        />
+        <Route path="/game" element={<GamePage matchDetails={matchDetails} />} />
       </Routes>
     </AnimatePresence>
   );

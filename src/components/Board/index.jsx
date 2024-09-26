@@ -75,7 +75,7 @@ export function TicTacToeBoard({
           {winner}
         </div>
       ) : (
-        <Loading letters="Matching" color='yellow' />
+        <Loading letters="Matching" />
       )}
       <Toaster position="top-center" richColors />
     </div>

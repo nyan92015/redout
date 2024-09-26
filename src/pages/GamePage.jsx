@@ -3,7 +3,7 @@ import Loading from '../components/Loading';
 import { TicTacToe } from '../components/Game';
 import { TicTacToeBoard } from '../components/Board';
 import { SERVER_URL } from '../config';
-import { Client, Lobby } from 'boardgame.io/react';
+import { Client } from 'boardgame.io/react';
 import { SocketIO } from 'boardgame.io/multiplayer';
 
 const GamePage = ({ matchDetails }) => {
