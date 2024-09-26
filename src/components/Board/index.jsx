@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Toaster, toast } from 'sonner';
 import Loading from '../Loading';
-import Modal from '../Modal';
 
 export function TicTacToeBoard({
   ctx,
@@ -76,7 +75,7 @@ export function TicTacToeBoard({
           {winner}
         </div>
       ) : (
-        <Loading letters="Matching" />
+        <Loading letters="Matching" color='yellow' />
       )}
       <Toaster position="top-center" richColors />
     </div>

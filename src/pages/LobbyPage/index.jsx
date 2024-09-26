@@ -8,7 +8,6 @@ import Logo from '../../components/Logo';
 import Button from '../../components/Button';
 import useModal from '../../hooks/useModal';
 import Modal from '../../components/Modal';
-import Loading from '../../components/Loading';
 import Glare from '../../components/Glare';
 
 const LobbyPage = ({ matchDetails, setMatchDetails }) => {

@@ -2,7 +2,6 @@ import { gameName, lobbyClient } from '../config';
 
 /**
  * ゲームを探す関数
- * 空いているマッチを探す
  */
 export async function findAvailableMatch() {
   try {
@@ -10,7 +9,7 @@ export async function findAvailableMatch() {
 
     // 空いている席があるマッチを探す
     const availableMatch = matches.find(
-      (match) => match.players.some((player) => !player.name), // プレイヤーの空席を確認
+      (match) => match.players.some((player) => !player.name)
     );
 
     if (availableMatch) {
@@ -32,7 +31,7 @@ export async function findAvailableMatch() {
 export async function createNewMatch(numPlayers = 2) {
   try {
     const { matchID } = await lobbyClient.createMatch(gameName, { numPlayers });
-    return { matchID, playerID: '0' }; // プレイヤーIDは '0' で開始
+    return { matchID, playerID: '0' }; 
   } catch (error) {
     console.error('Error creating match:', error);
     throw error;
@@ -55,8 +54,31 @@ export async function joinMatch(matchID, playerID, playerName) {
   }
 }
 
-// マッチ情報を取得する関数
+/**
+ * マッチから離れる関数
+ */
+export async function leaveMatch(matchID, playerID, playerCredentials) {
+  try {
+    await lobbyClient.leaveMatch(gameName, matchID, {
+      playerID,
+      credentials: playerCredentials,
+    });
+    console.log(`Player ${playerID} has left match ${matchID}`);
+  } catch (error) {
+    console.error('Error leaving match:', error);
+    throw error;
+  }
+}
+
+/**
+ * マッチ情報を取得する関数
+ */
 export async function getMatch(matchID) {
-  const match = await lobbyClient.getMatch('tic-tac-toe', matchID);
-  return match;
+  try {
+    const match = await lobbyClient.getMatch(gameName, matchID);
+    return match;
+  } catch (error) {
+    console.error('Error getting match:', error);
+    throw error;
+  }
 }
