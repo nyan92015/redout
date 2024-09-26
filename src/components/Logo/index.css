@@ -1,0 +1,16 @@
+/* ロゴ全体のコンテナ */
+.logo-container {
+  display: flex;
+  font-size: 70px;
+  font-weight: bold;
+}
+
+/* 各文字のスタイル */
+.logo-letter {
+  margin-right: 12px; /* 各文字の間にスペースを追加 */
+}
+
+/* ピリオドのスペースを除外 */
+.logo-letter:last-child {
+  margin-right: 0;
+}

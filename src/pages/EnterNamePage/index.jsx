@@ -15,17 +15,19 @@ const EnterNamePage = ({ matchDetails, setMatchDetails }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setMatchDetails({ ...matchDetails, playerName });
-    navigate('/lobby'); // ロビー画面へ遷移
+    if (playerName) {
+      setMatchDetails({ ...matchDetails, playerName });
+      navigate('/lobby');
+    }
   };
 
   return (
     <motion.div
       className="enter-name-page"
-      initial={{ opacity: 0 }} //　初期状態
-      animate={{ opacity: 1 }} // マウント時
-      exit={{ opacity: 0 }} // アンマウント時
-      transition={{duration: 0.8}}
+      initial={{ filter: 'blur(10px)', opacity: 0 }}
+      animate={{ filter: 'blur(0px)', opacity: 1 }}
+      exit={{ filter: 'blur(10px)', opacity: 0 }}
+      transition={{ duration: 0.8 }}
     >
       <h1>Redout.io</h1>
       <p className="description">{displayText}</p>

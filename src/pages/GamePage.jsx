@@ -8,10 +8,8 @@ import { SocketIO } from 'boardgame.io/multiplayer';
 
 const GamePage = ({ matchDetails }) => {
   if (!matchDetails) {
-    return <Loading />;
+    return <Loading letters={'Matching'} />;
   }
-
-  console.log(matchDetails);
 
   const TicTacToeClient = Client({
     game: TicTacToe,

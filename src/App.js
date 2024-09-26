@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import EnterNamePage from './pages/EnterNamePage';
 import LobbyPage from './pages/LobbyPage';
 import GamePage from './pages/GamePage';
@@ -7,10 +7,10 @@ import { AnimatePresence } from 'framer-motion';
 
 const App = () => {
   const location = useLocation();
-  const [matchDetails, setMatchDetails] = useState(null);
+  const [matchDetails, setMatchDetails] = useState({ playerName: 'aaa' });
 
   return (
-    <AnimatePresence mode="wait">
+    <AnimatePresence>
       <Routes location={location} key={location.pathname}>
         <Route
           path="/"
