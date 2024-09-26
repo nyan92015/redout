@@ -48,7 +48,7 @@ const LobbyPage = ({ matchDetails, setMatchDetails }) => {
         <Button onClick={open}>How to play</Button>
       </div>
       {modalOpen && <Modal handleClose={close}></Modal>}
-      <Glare/>
+      <Glare />
     </motion.div>
   );
 };

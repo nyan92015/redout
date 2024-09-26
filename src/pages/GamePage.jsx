@@ -8,14 +8,14 @@ import { SocketIO } from 'boardgame.io/multiplayer';
 
 const GamePage = ({ matchDetails }) => {
   if (!matchDetails) {
-    return <Loading/>;
+    return <Loading letters="Connecting" color="yellow" />;
   }
 
   const TicTacToeClient = Client({
     game: TicTacToe,
     board: TicTacToeBoard,
     multiplayer: SocketIO({ server: SERVER_URL }),
-    loading: Loading,
+    loading: () => <Loading letters="Connecting" color="yellow" />,
     debug: false,
   });
 

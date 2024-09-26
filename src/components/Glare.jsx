@@ -14,7 +14,7 @@ const Glare = () => {
         alignItems: 'center',
         justifyContent: 'center',
         backdropFilter: 'blur(10px)',
-        pointerEvents: 'none'
+        pointerEvents: 'none',
       }}
     />
   );

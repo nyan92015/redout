@@ -1,25 +1,24 @@
 .lobby-page {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    backdrop-filter: brightness(110%);
-    filter: blur(10px);
-  }
-  
-  .logo-container {
-    margin-bottom: 40px; /* ロゴを少し上に配置 */
-  }
-  
-  .button-container {
-    display: flex;
-    gap: 40px; /* ボタンの間にスペースを作る */
-  }
-  
-  button {
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  backdrop-filter: brightness(110%);
+  filter: blur(10px);
+}
+
+.logo-container {
+  margin-bottom: 40px; /* ロゴを少し上に配置 */
+}
+
+.button-container {
+  display: flex;
+  gap: 40px; /* ボタンの間にスペースを作る */
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
