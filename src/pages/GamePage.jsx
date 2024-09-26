@@ -16,6 +16,7 @@ const GamePage = ({ matchDetails }) => {
     game: TicTacToe,
     board: TicTacToeBoard,
     multiplayer: SocketIO({ server: SERVER_URL }),
+    loading: Loading,
     debug: false,
   });
 
