@@ -24,7 +24,10 @@ const Loading = ({ letters = 'Loading' }) => {
   };
 
   return (
-    <div className="loading">
+    <motion.div className="loading" initial={{ filter: 'blur(10px)', opacity: 0 }}
+    animate={{ filter: 'blur(0px)', opacity: 1 }}
+    exit={{ filter: 'blur(10px)', opacity: 0 }}
+    transition={{ duration: 0.8 }}>
       <LineWave
         visible={true}
         height="100"
@@ -51,7 +54,7 @@ const Loading = ({ letters = 'Loading' }) => {
         color="#4fa94d"
         ariaLabel="line-wave-loading"
       />
-    </div>
+    </motion.div>
   );
 };
 

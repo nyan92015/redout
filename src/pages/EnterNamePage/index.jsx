@@ -27,8 +27,9 @@ const EnterNamePage = ({ matchDetails, setMatchDetails }) => {
       initial={{ filter: 'blur(10px)', opacity: 0 }}
       animate={{ filter: 'blur(0px)', opacity: 1 }}
       exit={{ filter: 'blur(10px)', opacity: 0 }}
-      transition={{ duration: 0.8 }}
+      transition={{ duration: 0.3 }}
     >
+      <div className="background-blur"></div>
       <h1>Redout.io</h1>
       <p className="description">{displayText}</p>
       <form onSubmit={handleSubmit}>

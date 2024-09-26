@@ -28,7 +28,7 @@ const Modal = ({ handleClose, children }) => {
   return (
     <BackDrop onClick={handleClose}>
       <motion.div
-        className="modal-howtoplay"
+        className="modal"
         variants={dropIn}
         initial="hidden"
         animate="visible"

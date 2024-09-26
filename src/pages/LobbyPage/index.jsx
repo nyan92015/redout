@@ -8,6 +8,8 @@ import Logo from '../../components/Logo';
 import Button from '../../components/Button';
 import useModal from '../../hooks/useModal';
 import Modal from '../../components/Modal';
+import Loading from '../../components/Loading';
+import Glare from '../../components/Glare';
 
 const LobbyPage = ({ matchDetails, setMatchDetails }) => {
   const navigate = useNavigate();
@@ -32,7 +34,7 @@ const LobbyPage = ({ matchDetails, setMatchDetails }) => {
 
   return (
     <motion.div
-      className="enter-name-page"
+      className="lobby-page"
       initial={{ filter: 'blur(10px)', opacity: 0 }}
       animate={{ filter: 'blur(0px)', opacity: 1 }}
       exit={{ filter: 'blur(10px)', opacity: 0 }}
@@ -45,7 +47,8 @@ const LobbyPage = ({ matchDetails, setMatchDetails }) => {
         <Button onClick={setUpGame}>Start</Button>
         <Button onClick={open}>How to play</Button>
       </div>
-      {modalOpen && <Modal modalOpen={modalOpen} handleClose={close}></Modal>}
+      {modalOpen && <Modal handleClose={close}></Modal>}
+      <Glare/>
     </motion.div>
   );
 };
