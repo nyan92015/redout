@@ -5,7 +5,6 @@ import { TicTacToeBoard } from '../components/Board';
 import { SERVER_URL } from '../config';
 import { Client, Lobby } from 'boardgame.io/react';
 import { SocketIO } from 'boardgame.io/multiplayer';
-import Modal from '../components/Modal';
 
 const GamePage = ({ matchDetails }) => {
   if (!matchDetails) {
