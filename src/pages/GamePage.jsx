@@ -23,7 +23,6 @@ const GamePage = () => {
     loading: () => <Loading letters="Connecting" color="yellow" />,
     debug: false,
   });
-
   return (
     <TicTacToeClient
       credentials={matchDetails.playerCredentials}

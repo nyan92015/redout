@@ -2,36 +2,29 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Toaster, toast } from 'sonner';
 import Loading from '../Loading';
 import { Match } from '../../App';
-import { leaveMatch } from '../../services/matchService';
+import { getMatch, leaveMatch } from '../../services/matchService';
 import { useNavigate } from 'react-router-dom';
+import Button from '../Button';
 
-export function TicTacToeBoard({ ctx, G, moves, sendChatMessage, chatMessages, playerID }) {
+export function TicTacToeBoard({ ctx, G, moves, sendChatMessage, chatMessages }) {
   const { matchDetails, setMatchDetails } = useContext(Match);
+  const [isPlayerJoined, setIsPlayerJoined] = useState(false);
   const navigate = useNavigate();
-  const [playerJoined, setPlayerJoined] = useState(false);
-  if (matchDetails.playerID === '1' && !playerJoined) {
-    sendChatMessage({
-      senderName: matchDetails.playerName,
-      message: `${matchDetails.playerName} has joined the game.`,
-    });
-    setPlayerJoined(true);
-  }
-  if (chatMessages.length > 0) {
-    const latestMessage = chatMessages[chatMessages.length - 1];
-    if (playerID === '0' && latestMessage.sender === '1' && !playerJoined) {
-      sendChatMessage({
-        senderName: matchDetails.playerName,
-        message: `${matchDetails.playerName} has joined the game.`,
-      });
-      setPlayerJoined(true);
-    }
-  }
 
   useEffect(() => {
-    if (chatMessages.length > 0 && chatMessages[chatMessages.length - 1].sender !== playerID)
-      toast.success(chatMessages[chatMessages.length - 1].payload.message);
-  }, [chatMessages]);
+    (async () => {
+      const matchData = await getMatch(matchDetails.matchID);
+      if (matchData.players.length === 2) {
+        if (matchDetails.playerID === '1' && matchData.players[0].name) setIsPlayerJoined(true);
+        if (matchDetails.playerID === '0' && matchData.players[1].name) setIsPlayerJoined(true);
+      }
+    })();
+  }, []);
 
+  const leaveGamePage = () => {
+    setMatchDetails({ playerName: matchDetails.playerName });
+    navigate('/lobby');
+  };
   const onClick = (id) => moves.clickCell(id);
   let winner = '';
   if (ctx.gameover) {
@@ -74,7 +67,7 @@ export function TicTacToeBoard({ ctx, G, moves, sendChatMessage, chatMessages, p
 
   return (
     <div>
-      {playerJoined ? (
+      {isPlayerJoined ? (
         <div>
           <table id="board">
             <tbody>{tbody}</tbody>
@@ -82,7 +75,10 @@ export function TicTacToeBoard({ ctx, G, moves, sendChatMessage, chatMessages, p
           {winner}
         </div>
       ) : (
-        <Loading letters="Matching" />
+        <>
+          <Button onClick={leaveGamePage} />
+          <Loading letters="Matching" />
+        </>
       )}
       <Toaster position="top-center" richColors />
     </div>
