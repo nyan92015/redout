@@ -14,12 +14,16 @@ export function TicTacToeBoard({ ctx, G, moves, sendChatMessage, chatMessages })
   useEffect(() => {
     (async () => {
       const matchData = await getMatch(matchDetails.matchID);
-      if (matchData.players.length === 2) {
-        if (matchDetails.playerID === '1' && matchData.players[0].name) setIsPlayerJoined(true);
-        if (matchDetails.playerID === '0' && matchData.players[1].name) setIsPlayerJoined(true);
+      if (matchData.players.length === 2 && !isPlayerJoined) {
+        if ((matchDetails.playerID === '1' && matchData.players[0].name) || (matchDetails.playerID === '0' && matchData.players[1].name)) {
+          setIsPlayerJoined(true);
+          sendChatMessage({senderName: matchDetails.playerName, message: `${matchDetails.playerName} join the game.`})
+          console.log(chatMessages);
+        }
       }
     })();
-  }, []);
+  }, [chatMessages]);
+
 
   const backToLobby = () => {
     setMatchDetails({ playerName: matchDetails.playerName });
