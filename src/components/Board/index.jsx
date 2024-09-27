@@ -4,7 +4,7 @@ import Loading from '../Loading';
 import { Match } from '../../App';
 import { getMatch, leaveMatch } from '../../services/matchService';
 import { useNavigate } from 'react-router-dom';
-import Button from '../Button';
+import CancelButton from '../CancelButton.jsx';
 
 export function TicTacToeBoard({ ctx, G, moves, sendChatMessage, chatMessages }) {
   const { matchDetails, setMatchDetails } = useContext(Match);
@@ -77,7 +77,7 @@ export function TicTacToeBoard({ ctx, G, moves, sendChatMessage, chatMessages })
     <div>
       {isPlayerJoined ? (
         <div>
-          <Button onClick={backToLobby}>aaa</Button>
+          <CancelButton onClick={backToLobby} />
           <table id="board">
             <tbody>{tbody}</tbody>
           </table>
@@ -87,7 +87,7 @@ export function TicTacToeBoard({ ctx, G, moves, sendChatMessage, chatMessages })
         <>
           <Loading letters="Matching" />
 
-          <Button onClick={leaveGame}>aaa</Button>
+          <CancelButton onClick={leaveGame}/>
         </>
       )}
       <Toaster position="top-center" richColors />

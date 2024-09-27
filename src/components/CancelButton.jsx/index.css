@@ -1,0 +1,21 @@
+.cancel-button{
+  position: fixed;
+  bottom: 6vh;
+  left: 4vw;
+  width: 10vh;
+  height: 10vh;
+  padding: 10px;
+  background-color: #2c2c2c;
+border-radius: 50%;
+}
+
+.sl-arrow-left-circle{
+  color: #859a97;
+  width: 10vh;
+  height: 10vh;
+  transition: 0.5s;
+  border-radius: 50%;
+}
+.sl-arrow-left-circle:hover {
+  color: #ffffff;
+}
