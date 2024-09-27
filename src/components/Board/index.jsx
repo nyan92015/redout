@@ -12,13 +12,13 @@ export function TicTacToeBoard({ ctx, G, moves, sendChatMessage, chatMessages })
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log(chatMessages);
     (async () => {
       const matchData = await getMatch(matchDetails.matchID);
       if (matchData.players.length === 2 && !isPlayerJoined) {
         if ((matchDetails.playerID === '1' && matchData.players[0].name) || (matchDetails.playerID === '0' && matchData.players[1].name)) {
           setIsPlayerJoined(true);
           sendChatMessage({senderName: matchDetails.playerName, message: `${matchDetails.playerName} join the game.`})
-          console.log(chatMessages);
         }
       }
     })();
