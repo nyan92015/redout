@@ -1,18 +1,19 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import './index.css';
 import InputField from '../../components/InputField';
 import { useTypewriter } from 'react-simple-typewriter';
+import { Match } from '../../App';
 
-const EnterNamePage = ({ matchDetails, setMatchDetails }) => {
+const EnterNamePage = () => {
+  const { matchDetails, setMatchDetails } = useContext(Match);
   const [playerName, setPlayerName] = useState('');
   const navigate = useNavigate();
   const [displayText] = useTypewriter({
     words: ['Please enter your name and press the Enter key to connect Lobby.'],
     loop: 1,
   });
-
   const handleSubmit = (e) => {
     e.preventDefault();
     if (playerName) {

@@ -1,25 +1,28 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Toaster, toast } from 'sonner';
 import Loading from '../Loading';
+import { Match } from '../../App';
+import { leaveMatch } from '../../services/matchService';
+import { useNavigate } from 'react-router-dom';
 
-export function TicTacToeBoard({
-  ctx,
-  G,
-  moves,
-  sendChatMessage,
-  chatMessages,
-  playerID,
-  playerName,
-}) {
+export function TicTacToeBoard({ ctx, G, moves, sendChatMessage, chatMessages, playerID }) {
+  const { matchDetails, setMatchDetails } = useContext(Match);
+  const navigate = useNavigate();
   const [playerJoined, setPlayerJoined] = useState(false);
-  if (playerID === '1' && !playerJoined) {
-    sendChatMessage({ senderName: playerName, message: `${playerName} has joined the game.` });
+  if (matchDetails.playerID === '1' && !playerJoined) {
+    sendChatMessage({
+      senderName: matchDetails.playerName,
+      message: `${matchDetails.playerName} has joined the game.`,
+    });
     setPlayerJoined(true);
   }
   if (chatMessages.length > 0) {
     const latestMessage = chatMessages[chatMessages.length - 1];
     if (playerID === '0' && latestMessage.sender === '1' && !playerJoined) {
-      sendChatMessage({ senderName: playerName, message: `${playerName} has joined the game.` });
+      sendChatMessage({
+        senderName: matchDetails.playerName,
+        message: `${matchDetails.playerName} has joined the game.`,
+      });
       setPlayerJoined(true);
     }
   }
@@ -28,6 +31,7 @@ export function TicTacToeBoard({
     if (chatMessages.length > 0 && chatMessages[chatMessages.length - 1].sender !== playerID)
       toast.success(chatMessages[chatMessages.length - 1].payload.message);
   }, [chatMessages]);
+
   const onClick = (id) => moves.clickCell(id);
   let winner = '';
   if (ctx.gameover) {
@@ -37,6 +41,9 @@ export function TicTacToeBoard({
       ) : (
         <div id="winner">Draw!</div>
       );
+    leaveMatch(matchDetails.matchID, matchDetails.playerID, matchDetails.playerCredentials);
+    setMatchDetails({ playerName: matchDetails.playerName });
+    navigate('/lobby');
   }
 
   const cellStyle = {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { createNewMatch, findAvailableMatch, joinMatch } from '../../services/matchService';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -9,9 +9,11 @@ import Button from '../../components/Button';
 import useModal from '../../hooks/useModal';
 import Modal from '../../components/Modal';
 import Glare from '../../components/Glare';
+import { Match } from '../../App';
 
-const LobbyPage = ({ matchDetails, setMatchDetails }) => {
+const LobbyPage = () => {
   const navigate = useNavigate();
+  const { matchDetails, setMatchDetails } = useContext(Match);
   const setUpGame = async () => {
     let matchData = await findAvailableMatch();
 
@@ -46,7 +48,11 @@ const LobbyPage = ({ matchDetails, setMatchDetails }) => {
         <Button onClick={setUpGame}>Start</Button>
         <Button onClick={open}>How to play</Button>
       </div>
-      {modalOpen && <Modal handleClose={close}></Modal>}
+      {modalOpen && (
+        <Modal handleClose={close}>
+          <h1>How to play</h1>
+        </Modal>
+      )}
       <Glare />
     </motion.div>
   );

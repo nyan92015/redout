@@ -1,15 +1,20 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Loading from '../components/Loading';
 import { TicTacToe } from '../components/Game';
 import { TicTacToeBoard } from '../components/Board';
 import { SERVER_URL } from '../config';
 import { Client } from 'boardgame.io/react';
 import { SocketIO } from 'boardgame.io/multiplayer';
+import { Match } from '../App';
+import { useNavigate } from 'react-router-dom';
 
-const GamePage = ({ matchDetails }) => {
+const GamePage = () => {
+  const navigate = useNavigate();
+  const { matchDetails } = useContext(Match);
   if (!matchDetails) {
-    return <Loading letters="Connecting" color="yellow" />;
+    navigate('/lobby');
   }
+  console.log(matchDetails);
 
   const TicTacToeClient = Client({
     game: TicTacToe,
