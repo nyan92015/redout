@@ -29,7 +29,7 @@ export function TicTacToeBoard({ ctx, G, moves, sendChatMessage, chatMessages })
   const leaveGame = () => {
     leaveMatch(matchDetails.matchID, matchDetails.playerID, matchDetails.playerCredentials);
     backToLobby();
-  }
+  };
 
   const onClick = (id) => moves.clickCell(id);
   let winner = '';
@@ -73,7 +73,7 @@ export function TicTacToeBoard({ ctx, G, moves, sendChatMessage, chatMessages })
     <div>
       {isPlayerJoined ? (
         <div>
-          <Button onClick={backToLobby} />
+          <Button onClick={backToLobby}>aaa</Button>
           <table id="board">
             <tbody>{tbody}</tbody>
           </table>
@@ -81,8 +81,9 @@ export function TicTacToeBoard({ ctx, G, moves, sendChatMessage, chatMessages })
         </div>
       ) : (
         <>
-          <Button onClick={leaveGame} />
           <Loading letters="Matching" />
+
+          <Button onClick={leaveGame}>aaa</Button>
         </>
       )}
       <Toaster position="top-center" richColors />
