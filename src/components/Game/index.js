@@ -46,7 +46,7 @@ function reset({ G, events }) {
   G.round.winner = null;
 }
 
-function sendJoinMessage({  events }) {
+function sendJoinMessage({ G, events }) {
   events.sendChatMessage('join the game');
   G.greet = true;
 }
