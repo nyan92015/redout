@@ -23,6 +23,7 @@ export function TicTacToeBoard({ ctx, G, moves, sendChatMessage, chatMessages })
             senderName: matchDetails.playerName,
             message: `${matchDetails.playerName} join the game.`,
           });
+          
           if (matchDetails.playerID === '1')
             setMatchDetails({
               ...matchDetails,
@@ -37,6 +38,7 @@ export function TicTacToeBoard({ ctx, G, moves, sendChatMessage, chatMessages })
               myID: 0,
               enemyID: 1,
             });
+          toast.success(`${matchDetails.enemyName} join the game.`)
         }
       }
     })();
