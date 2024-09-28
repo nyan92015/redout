@@ -42,6 +42,10 @@ export function TicTacToeBoard({ ctx, G, moves, sendChatMessage, chatMessages })
     })();
   }, [chatMessages]);
 
+  useEffect(() => {
+    toast.success(chatMessages[chatMessages.length - 1].payload.message);
+  }, [chatMessages]);
+
   const backToLobby = () => {
     setMatchDetails({ playerName: matchDetails.playerName });
     navigate('/lobby');
