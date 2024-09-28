@@ -46,6 +46,12 @@ function reset({ G, events }) {
   G.round.winner = null;
 }
 
+function sendJoinMessage({  events }) {
+  events.sendChatMessage('join the game');
+  G.greet = true;
+}
+
+
 function judgeRoundWinner({ G }) {
   // アウト判定のロジック
   const player1Card = G.playerData[0].roundCard;
@@ -83,6 +89,7 @@ function judgeRoundWinner({ G }) {
 export const RedOut = {
   name: 'redout',
   setup: () => ({
+    greet: false,
     round: {
       winner: null,
     },
@@ -93,8 +100,15 @@ export const RedOut = {
     }),
   }),
   phases: {
-    draw: {
+    greet: {
       start: true,
+      onBegin: sendJoinMessage,
+      endIf: ({ G }) => {
+        return G.greet
+      },
+      next: 'draw'
+    },
+    draw: {
       onBegin: dealHands,
       endIf: ({ G }) => {
         return G.playerData[0].hands.length > 0 && G.playerData[1].hands.length > 0;
