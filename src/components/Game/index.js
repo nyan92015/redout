@@ -46,17 +46,11 @@ function reset({ G, events }) {
   G.round.winner = null;
 }
 
-function sendJoinMessage({ G, events }) {
-  events.sendChatMessage('join the game');
-  G.greet = true;
-}
-
 
 function judgeRoundWinner({ G }) {
   // アウト判定のロジック
   const player1Card = G.playerData[0].roundCard;
   const player2Card = G.playerData[1].roundCard;
-  console.log(player1Card, player2Card);
   let winner = null;
   if (
     player1Card === 'red_skull' &&
@@ -100,14 +94,7 @@ export const RedOut = {
     }),
   }),
   phases: {
-    greet: {
-      start: true,
-      onBegin: sendJoinMessage,
-      endIf: ({ G }) => {
-        return G.greet
-      },
-      next: 'draw'
-    },
+    
     draw: {
       onBegin: dealHands,
       endIf: ({ G }) => {
