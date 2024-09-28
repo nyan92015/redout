@@ -43,7 +43,7 @@ export function TicTacToeBoard({ ctx, G, moves, sendChatMessage, chatMessages })
   }, [chatMessages]);
 
   useEffect(() => {
-    toast.success(chatMessages[chatMessages.length - 1].payload.message);
+    console.log(chatMessages)
   }, [chatMessages]);
 
   const backToLobby = () => {
