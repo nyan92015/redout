@@ -24,21 +24,25 @@ export function TicTacToeBoard({ ctx, G, moves, sendChatMessage, chatMessages })
             message: `${matchDetails.playerName} join the game.`,
           });
           
-          if (matchDetails.playerID === '1')
+          if (matchDetails.playerID === '1'){
+            toast.success(`${matchData.players[1].name} join the game.`)
             setMatchDetails({
               ...matchDetails,
               enemyName: matchData.players[0].name,
               myID: 1,
               enemyID: 0,
             });
-          if (matchDetails.playerID === '0')
+          }
+            
+          if (matchDetails.playerID === '0'){
+            toast.success(`${matchData.players[1].name} join the game.`)
             setMatchDetails({
               ...matchDetails,
               enemyName: matchData.players[1].name,
               myID: 0,
               enemyID: 1,
             });
-          toast.success(`${matchDetails.enemyName} join the game.`)
+          }
         }
       }
     })();
