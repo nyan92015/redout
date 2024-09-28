@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import Loading from '../components/Loading';
-import { TicTacToe } from '../components/Game';
+import { RedOut } from '../components/Game';
 import { TicTacToeBoard } from '../components/Board';
 import { SERVER_URL } from '../config';
 import { Client } from 'boardgame.io/react';
@@ -16,15 +16,15 @@ const GamePage = () => {
   }
   console.log(matchDetails);
 
-  const TicTacToeClient = Client({
-    game: TicTacToe,
+  const RedOutClient = Client({
+    game: RedOut,
     board: TicTacToeBoard,
     multiplayer: SocketIO({ server: SERVER_URL }),
     loading: () => <Loading letters="Connecting" color="yellow" />,
     debug: false,
   });
   return (
-    <TicTacToeClient
+    <RedOutClient
       credentials={matchDetails.playerCredentials}
       playerID={matchDetails.playerID}
       playerName={matchDetails.playerName}

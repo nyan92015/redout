@@ -6,24 +6,41 @@ import { getMatch, leaveMatch } from '../../services/matchService';
 import { useNavigate } from 'react-router-dom';
 import CancelButton from '../CancelButton.jsx';
 
+import './index.css';
 export function TicTacToeBoard({ ctx, G, moves, sendChatMessage, chatMessages }) {
   const { matchDetails, setMatchDetails } = useContext(Match);
-  const [isPlayerJoined, setIsPlayerJoined] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(chatMessages);
     (async () => {
       const matchData = await getMatch(matchDetails.matchID);
-      if (matchData.players.length === 2 && !isPlayerJoined) {
-        if ((matchDetails.playerID === '1' && matchData.players[0].name) || (matchDetails.playerID === '0' && matchData.players[1].name)) {
-          setIsPlayerJoined(true);
-          sendChatMessage({senderName: matchDetails.playerName, message: `${matchDetails.playerName} join the game.`})
+      if (matchData.players.length === 2 && !matchDetails.enemyName) {
+        if (
+          (matchDetails.playerID === '1' && matchData.players[0].name) ||
+          (matchDetails.playerID === '0' && matchData.players[1].name)
+        ) {
+          sendChatMessage({
+            senderName: matchDetails.playerName,
+            message: `${matchDetails.playerName} join the game.`,
+          });
+          if (matchDetails.playerID === '1')
+            setMatchDetails({
+              ...matchDetails,
+              enemyName: matchData.players[0].name,
+              myID: 1,
+              enemyID: 0,
+            });
+          if (matchDetails.playerID === '0')
+            setMatchDetails({
+              ...matchDetails,
+              enemyName: matchData.players[1].name,
+              myID: 0,
+              enemyID: 1,
+            });
         }
       }
     })();
   }, [chatMessages]);
-
 
   const backToLobby = () => {
     setMatchDetails({ playerName: matchDetails.playerName });
@@ -35,59 +52,70 @@ export function TicTacToeBoard({ ctx, G, moves, sendChatMessage, chatMessages })
     backToLobby();
   };
 
-  const onClick = (id) => moves.clickCell(id);
-  let winner = '';
-  if (ctx.gameover) {
-    winner =
-      ctx.gameover.winner !== undefined ? (
-        <div id="winner">Winner: {ctx.gameover.winner}</div>
-      ) : (
-        <div id="winner">Draw!</div>
-      );
-    leaveGame();
-  }
-
-  const cellStyle = {
-    border: '1px solid #555',
-    width: '50px',
-    height: '50px',
-    lineHeight: '50px',
-    textAlign: 'center',
+  const handleCardPlay = (card, playerID) => {
+    moves.playCard(card, playerID);
   };
-
-  let tbody = [];
-  for (let i = 0; i < 3; i++) {
-    let cells = [];
-    for (let j = 0; j < 3; j++) {
-      const id = 3 * i + j;
-      cells.push(
-        <td key={id}>
-          {G.cells[id] ? (
-            <div style={cellStyle}>{G.cells[id]}</div>
-          ) : (
-            <button style={cellStyle} onClick={() => onClick(id)} />
-          )}
-        </td>,
-      );
-    }
-    tbody.push(<tr key={i}>{cells}</tr>);
-  }
 
   return (
     <div>
-      {isPlayerJoined ? (
-        <div>
+      {matchDetails.enemyName ? (
+        <div className="board">
+          <h2>RedOut Game</h2>
+          <div className="scoreboard">
+            <div>
+              {matchDetails.playerName}: {G.playerData[matchDetails.myID].score}
+            </div>
+            <div>
+              {matchDetails.enemyName}: {G.playerData[matchDetails.enemyID].score}
+            </div>
+          </div>
+          <div className="hands">
+            {G.playerData.map((player, index) => (
+              <div key={index} className="hand">
+                <h3>
+                  {index === matchDetails.myID ? matchDetails.playerName : matchDetails.enemyName}
+                </h3>
+                <div className={index === matchDetails.myID ? 'cards' : 'enemy-cards'}>
+                  {player.hands.map((card, index) => (
+                    <div
+                      key={index}
+                      className="card"
+                      onClick={() => handleCardPlay(card, matchDetails.playerID)} // カードをクリックしたときにプレイ
+                    >
+                      {card}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="round-info">
+            <div>
+              <h3>Round Cards</h3>
+              {G.playerData[matchDetails.myID].roundCard && (
+                <div>{matchDetails.playerName} set </div>
+              )}
+              {G.playerData[matchDetails.enemyID].roundCard && (
+                <div>{matchDetails.enemyName} set</div>
+              )}
+            </div>
+          </div>
+          {ctx.gameover && (
+            <div className="game-over">
+              Game Over! Player{' '}
+              {ctx.gameover.winner === matchDetails.myID
+                ? matchDetails.playerName
+                : matchDetails.enemyName}{' '}
+              wins!
+            </div>
+          )}
           <CancelButton onClick={backToLobby} />
-          <table id="board">
-            <tbody>{tbody}</tbody>
-          </table>
-          {winner}
         </div>
       ) : (
         <>
           <Loading letters="Matching" />
 
-          <CancelButton onClick={leaveGame}/>
+          <CancelButton onClick={leaveGame} />
         </>
       )}
       <Toaster position="top-center" richColors />
