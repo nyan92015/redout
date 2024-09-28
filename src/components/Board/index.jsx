@@ -49,6 +49,7 @@ export function TicTacToeBoard({ ctx, G, moves, sendChatMessage, chatMessages })
   }, [chatMessages]);
 
   useEffect(() => {
+    toast.success("aaa")
     console.log(chatMessages)
   }, [chatMessages]);
 
@@ -70,6 +71,7 @@ export function TicTacToeBoard({ ctx, G, moves, sendChatMessage, chatMessages })
     <div>
       {matchDetails.enemyName ? (
         <div className="board">
+          <button onClick={() => {sendChatMessage("aaa")}}>aaa</button>
           <h2>RedOut Game</h2>
           <div className="scoreboard">
             <div>
