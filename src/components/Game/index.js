@@ -2,10 +2,6 @@ import { ActivePlayers, INVALID_MOVE } from 'boardgame.io/core';
 
 const NUM_CARDS_IN_HAND = 5;
 
-function sendJoinMessage({ G, playerID }) {
-  if (playerID === '0') G.message[0] = `join the game.`;
-  if (playerID === '1') G.message[1] = `join the game.`;
-}
 function initializeHand() {
   // 5種類のカード (赤ドクロ、白ドクロ、黒ドクロ、白カード、黒カード) を用意する
   const cards = ['red_skull', 'white_skull', 'black_skull', 'white_card', 'black_card'];
@@ -97,16 +93,8 @@ export const RedOut = {
     }),
   }),
   phases: {
-    greet: {
-      moves: { sendJoinMessage }, // 使用するmove関数
-      turn: {
-        activePlayers: ActivePlayers.ALL, // 全プレイヤーがアクティブ
-      },
-      start: true, // フェーズが最初に開始される
-      endIf: ({ G }) => G.message[0] && G.message[1], // 終了条件
-      next: 'draw', // 次のフェーズ
-    },
     draw: {
+      start: true,
       onBegin: dealHands,
       endIf: ({ G }) => {
         return G.playerData[0].hands.length > 0 && G.playerData[1].hands.length > 0;

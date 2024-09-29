@@ -7,39 +7,50 @@ import { useNavigate } from 'react-router-dom';
 import CancelButton from '../CancelButton.jsx';
 
 import './index.css';
-export function TicTacToeBoard({ ctx, G, moves }) {
+export function TicTacToeBoard({ ctx, G, moves, chatMessages, sendChatMessage }) {
   const { matchDetails, setMatchDetails } = useContext(Match);
+  const [isPlayerJoined, setPlayerJoined] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
+    if (!isPlayerJoined) {
+      sendChatMessage({
+        senderName: matchDetails.playerName,
+        message: `${matchDetails.playerName} join the game.`,
+      });
+      setPlayerJoined(true);
+    }
     (async () => {
       const matchData = await getMatch(matchDetails.matchID);
-      if (matchData.players.length === 2 && !matchDetails.enemyName) {
-        if (
-          (matchDetails.playerID === '1' && matchData.players[0].name) ||
-          (matchDetails.playerID === '0' && matchData.players[1].name)
-        ) {
-          if (matchDetails.playerID === '1') {
-            moves.sendJoinMessage();
-            setMatchDetails({
-              ...matchDetails,
-              enemyName: matchData.players[0].name,
-              myID: 1,
-              enemyID: 0,
-            });
-          }
+      if (matchData.players[0].name && matchData.players[1].name && !matchDetails.enemyName) {
+        if (matchDetails.playerID === '1') {
+          setMatchDetails({
+            ...matchDetails,
+            enemyName: matchData.players[0].name,
+            myID: 1,
+            enemyID: 0,
+          });
+        }
 
-          if (matchDetails.playerID === '0') {
-            setMatchDetails({
-              ...matchDetails,
-              enemyName: matchData.players[1].name,
-              myID: 0,
-              enemyID: 1,
-            });
-          }
+        if (matchDetails.playerID === '0') {
+          setMatchDetails({
+            ...matchDetails,
+            enemyName: matchData.players[1].name,
+            myID: 0,
+            enemyID: 1,
+          });
         }
       }
     })();
-  }, [G.message, moves, matchDetails, setMatchDetails]);
+  }, [chatMessages, sendChatMessage, matchDetails, setMatchDetails]);
+
+  useEffect(() => {
+    if (chatMessages.length > 0) {
+      if (chatMessages[chatMessages.length - 1].payload.senderName !== matchDetails.playerName) {
+        console.log('aaa');
+        toast.success(chatMessages[chatMessages.length - 1].payload.message);
+      }
+    }
+  }, [chatMessages]);
 
   const backToLobby = () => {
     setMatchDetails({ playerName: matchDetails.playerName });

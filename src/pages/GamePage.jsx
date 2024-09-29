@@ -14,7 +14,6 @@ const GamePage = () => {
   if (!matchDetails) {
     navigate('/lobby');
   }
-  console.log(matchDetails);
 
   const RedOutClient = Client({
     game: RedOut,

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 const ChatBoard = ({ chatMessages, sendChatMessage }) => {
   const [message, setMessage] = useState('');
-
+  console.log(chatMessages);
   // メッセージを送信するハンドラー
   const handleSendMessage = () => {
     if (message.trim() !== '') {
@@ -16,7 +16,7 @@ const ChatBoard = ({ chatMessages, sendChatMessage }) => {
       <ul>
         {chatMessages.map((msg, index) => (
           <li key={index}>
-            {msg.sender}: {msg.payload}{' '}
+            {msg.payload.senderName}: {msg.payload.message}{' '}
           </li> // チャットメッセージをリストとして表示
         ))}
       </ul>

@@ -1,7 +1,6 @@
 import { Origins, Server } from 'boardgame.io/server';
 import { RedOut } from './components/Game';
 import { gameName } from './config';
-import { Server as SocketIOServer } from 'socket.io';
 
 const server = Server({
   name: gameName,
