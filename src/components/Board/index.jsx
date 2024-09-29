@@ -7,25 +7,19 @@ import { useNavigate } from 'react-router-dom';
 import CancelButton from '../CancelButton.jsx';
 
 import './index.css';
-export function TicTacToeBoard({ ctx, G, moves, sendChatMessage, chatMessages }) {
+export function TicTacToeBoard({ ctx, G, moves }) {
   const { matchDetails, setMatchDetails } = useContext(Match);
   const navigate = useNavigate();
-
   useEffect(() => {
     (async () => {
       const matchData = await getMatch(matchDetails.matchID);
       if (matchData.players.length === 2 && !matchDetails.enemyName) {
+        moves.sendJoinMessage();
         if (
           (matchDetails.playerID === '1' && matchData.players[0].name) ||
           (matchDetails.playerID === '0' && matchData.players[1].name)
         ) {
-          sendChatMessage({
-            senderName: matchDetails.playerName,
-            message: `${matchDetails.playerName} join the game.`,
-          });
-          
-          if (matchDetails.playerID === '1'){
-            toast.success(`${matchData.players[1].name} join the game.`)
+          if (matchDetails.playerID === '1') {
             setMatchDetails({
               ...matchDetails,
               enemyName: matchData.players[0].name,
@@ -33,9 +27,8 @@ export function TicTacToeBoard({ ctx, G, moves, sendChatMessage, chatMessages })
               enemyID: 0,
             });
           }
-            
-          if (matchDetails.playerID === '0'){
-            toast.success(`${matchData.players[1].name} join the game.`)
+
+          if (matchDetails.playerID === '0') {
             setMatchDetails({
               ...matchDetails,
               enemyName: matchData.players[1].name,
@@ -46,12 +39,12 @@ export function TicTacToeBoard({ ctx, G, moves, sendChatMessage, chatMessages })
         }
       }
     })();
-  }, [chatMessages]);
+  }, [G.message]);
 
   useEffect(() => {
-    toast.success("aaa")
-    console.log(chatMessages)
-  }, [chatMessages]);
+    if (matchDetails.enemyID && G.message[matchDetails.enemyID])
+      toast.success(`${matchDetails.enemyName}: ${G.message[matchDetails.enemyID]}`);
+  }, [G.message]);
 
   const backToLobby = () => {
     setMatchDetails({ playerName: matchDetails.playerName });
@@ -71,7 +64,6 @@ export function TicTacToeBoard({ ctx, G, moves, sendChatMessage, chatMessages })
     <div>
       {matchDetails.enemyName ? (
         <div className="board">
-          <button onClick={() => {sendChatMessage("aaa")}}>aaa</button>
           <h2>RedOut Game</h2>
           <div className="scoreboard">
             <div>

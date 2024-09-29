@@ -2,6 +2,10 @@ import { ActivePlayers, INVALID_MOVE } from 'boardgame.io/core';
 
 const NUM_CARDS_IN_HAND = 5;
 
+function sendJoinMessage({ G, playerID }) {
+  if (playerID === '0') G.message[0] = `join the game.`;
+  if (playerID === '1') G.message[1] = `join the game.`;
+}
 function initializeHand() {
   // 5種類のカード (赤ドクロ、白ドクロ、黒ドクロ、白カード、黒カード) を用意する
   const cards = ['red_skull', 'white_skull', 'black_skull', 'white_card', 'black_card'];
@@ -46,7 +50,6 @@ function reset({ G, events }) {
   G.round.winner = null;
 }
 
-
 function judgeRoundWinner({ G }) {
   // アウト判定のロジック
   const player1Card = G.playerData[0].roundCard;
@@ -83,7 +86,7 @@ function judgeRoundWinner({ G }) {
 export const RedOut = {
   name: 'redout',
   setup: () => ({
-    greet: false,
+    message: Array(2).fill(null),
     round: {
       winner: null,
     },
@@ -94,7 +97,15 @@ export const RedOut = {
     }),
   }),
   phases: {
-    
+    greet: {
+      moves: { sendJoinMessage }, // 使用するmove関数
+      turn: {
+        activePlayers: ActivePlayers.ALL, // 全プレイヤーがアクティブ
+      },
+      start: true, // フェーズが最初に開始される
+      endIf: ({ G }) => G.message[0] && G.message[1], // 終了条件
+      next: 'draw', // 次のフェーズ
+    },
     draw: {
       onBegin: dealHands,
       endIf: ({ G }) => {

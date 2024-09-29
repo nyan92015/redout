@@ -11,7 +11,7 @@ export const Match = createContext();
 const App = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [matchDetails, setMatchDetails] = useLocalStorage('matchdata', { playerName: 'guest' });
+  const [matchDetails, setMatchDetails] = useState({ playerName: 'guest' });
 
   useEffect(() => {
     if (matchDetails.matchID && matchDetails.playerID && matchDetails.playerCredentials) {
