@@ -14,12 +14,12 @@ export function TicTacToeBoard({ ctx, G, moves }) {
     (async () => {
       const matchData = await getMatch(matchDetails.matchID);
       if (matchData.players.length === 2 && !matchDetails.enemyName) {
-        moves.sendJoinMessage();
         if (
           (matchDetails.playerID === '1' && matchData.players[0].name) ||
           (matchDetails.playerID === '0' && matchData.players[1].name)
         ) {
           if (matchDetails.playerID === '1') {
+            moves.sendJoinMessage();
             setMatchDetails({
               ...matchDetails,
               enemyName: matchData.players[0].name,
@@ -39,12 +39,12 @@ export function TicTacToeBoard({ ctx, G, moves }) {
         }
       }
     })();
-  }, [G.message]);
+  }, [G.message, moves, matchDetails, setMatchDetails]);
 
-  useEffect(() => {
-    if (matchDetails.enemyID && G.message[matchDetails.enemyID])
-      toast.success(`${matchDetails.enemyName}: ${G.message[matchDetails.enemyID]}`);
-  }, [G.message]);
+  if (matchDetails.enemyName && !matchDetails.isRecieveMessage) {
+    toast.success(`${matchDetails.enemyName} join the game.`);
+    setMatchDetails({ ...matchDetails, isRecieveMessage: true });
+  }
 
   const backToLobby = () => {
     setMatchDetails({ playerName: matchDetails.playerName });
