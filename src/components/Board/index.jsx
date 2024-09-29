@@ -41,11 +41,6 @@ export function TicTacToeBoard({ ctx, G, moves }) {
     })();
   }, [G.message, moves, matchDetails, setMatchDetails]);
 
-  if (matchDetails.enemyName && !matchDetails.isRecieveMessage) {
-    toast.success(`${matchDetails.enemyName} join the game.`);
-    setMatchDetails({ ...matchDetails, isRecieveMessage: true });
-  }
-
   const backToLobby = () => {
     setMatchDetails({ playerName: matchDetails.playerName });
     navigate('/lobby');
