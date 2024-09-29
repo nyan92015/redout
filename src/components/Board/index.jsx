@@ -120,6 +120,7 @@ export function TicTacToeBoard({ ctx, G, moves, chatMessages, sendChatMessage })
             </div>
           )}
           <CancelButton onClick={backToLobby} />
+          <Toaster position="top-center" richColors />
         </div>
       ) : (
         <>
@@ -128,7 +129,6 @@ export function TicTacToeBoard({ ctx, G, moves, chatMessages, sendChatMessage })
           <CancelButton onClick={leaveGame} />
         </>
       )}
-      <Toaster position="top-center" richColors />
     </div>
   );
 }
