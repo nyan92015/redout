@@ -5,13 +5,14 @@ import LobbyPage from './pages/LobbyPage';
 import GamePage from './pages/GamePage';
 import { AnimatePresence } from 'framer-motion';
 import useLocalStorage from './hooks/useLocalStorage';
+import { Toaster } from 'sonner';
 
 export const Match = createContext();
 
 const App = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [matchDetails, setMatchDetails] = useLocalStorage('matchDetails',{ playerName: 'guest' });
+  const [matchDetails, setMatchDetails] = useState({ playerName: 'guest' });
 
   useEffect(() => {
     if (matchDetails.matchID && matchDetails.playerID && matchDetails.playerCredentials) {
@@ -21,6 +22,7 @@ const App = () => {
 
   return (
     <AnimatePresence>
+      <Toaster position="top-center" richColors />
       <Match.Provider value={{ matchDetails, setMatchDetails }}>
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<EnterNamePage />} />

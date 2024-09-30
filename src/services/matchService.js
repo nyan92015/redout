@@ -57,13 +57,16 @@ export async function joinMatch(matchID, playerID, playerName) {
  */
 export async function leaveMatch(matchID, playerID, playerCredentials) {
   try {
-    await lobbyClient.leaveMatch(gameName, matchID, {
-      playerID,
-      credentials: playerCredentials,
-    });
+    const { matches } = await lobbyClient.listMatches(gameName);
+    if (matches.some((matchData) => matchData.matchID === matchID)) {
+      await lobbyClient.leaveMatch(gameName, matchID, {
+        playerID,
+        credentials: playerCredentials,
+      });
+    }
     console.log(`Player ${playerID} has left match ${matchID}`);
   } catch (error) {
-    console.error('Error leaving match:', error);
+    console.error('Error leaving match:', matchID);
     throw error;
   }
 }

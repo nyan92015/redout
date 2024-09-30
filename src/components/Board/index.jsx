@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Toaster, toast } from 'sonner';
+import { toast } from 'sonner';
 import Loading from '../Loading';
 import { Match } from '../../App';
 import { getMatch, leaveMatch } from '../../services/matchService';
@@ -7,46 +7,51 @@ import { useNavigate } from 'react-router-dom';
 import CancelButton from '../CancelButton.jsx';
 
 import './index.css';
+import useLocalStorage from '../../hooks/useLocalStorage.js';
 export function TicTacToeBoard({ ctx, G, moves, chatMessages, sendChatMessage }) {
   const { matchDetails, setMatchDetails } = useContext(Match);
+  const [localStorageData, setLocalStorageData] = useLocalStorage('matchData', {});
   const [isPlayerJoined, setPlayerJoined] = useState(false);
   const navigate = useNavigate();
-  useEffect(() => {
-    if (!isPlayerJoined) {
-      sendChatMessage({
-        senderName: matchDetails.playerName,
-        message: `${matchDetails.playerName} join the game.`,
-      });
-      setPlayerJoined(true);
-    }
-    (async () => {
-      const matchData = await getMatch(matchDetails.matchID);
-      if (matchData.players[0].name && matchData.players[1].name && !matchDetails.enemyName) {
-        if (matchDetails.playerID === '1') {
-          setMatchDetails({
-            ...matchDetails,
-            enemyName: matchData.players[0].name,
-            myID: 1,
-            enemyID: 0,
-          });
-        }
 
-        if (matchDetails.playerID === '0') {
-          setMatchDetails({
-            ...matchDetails,
-            enemyName: matchData.players[1].name,
-            myID: 0,
-            enemyID: 1,
-          });
-        }
+  useEffect(() => {
+    if (matchDetails.playerID && matchDetails.matchID && matchDetails.playerCredentials) {
+      setLocalStorageData(matchDetails);
+      if (!isPlayerJoined) {
+        sendChatMessage({
+          senderName: matchDetails.playerName,
+          message: `${matchDetails.playerName} join the game.`,
+        });
+        setPlayerJoined(true);
       }
-    })();
+      (async () => {
+        const matchData = await getMatch(matchDetails.matchID);
+        if (matchData.players[0].name && matchData.players[1].name && !matchDetails.enemyName) {
+          if (matchDetails.playerID === '1') {
+            setMatchDetails({
+              ...matchDetails,
+              enemyName: matchData.players[0].name,
+              myID: 1,
+              enemyID: 0,
+            });
+          }
+
+          if (matchDetails.playerID === '0') {
+            setMatchDetails({
+              ...matchDetails,
+              enemyName: matchData.players[1].name,
+              myID: 0,
+              enemyID: 1,
+            });
+          }
+        }
+      })();
+    }
   }, [chatMessages, sendChatMessage, matchDetails, setMatchDetails]);
 
   useEffect(() => {
     if (chatMessages.length > 0) {
       if (chatMessages[chatMessages.length - 1].payload.senderName !== matchDetails.playerName) {
-        console.log('aaa');
         toast.success(chatMessages[chatMessages.length - 1].payload.message);
       }
     }
@@ -54,13 +59,39 @@ export function TicTacToeBoard({ ctx, G, moves, chatMessages, sendChatMessage })
 
   const backToLobby = () => {
     setMatchDetails({ playerName: matchDetails.playerName });
+    setLocalStorageData({});
     navigate('/lobby');
   };
 
-  const leaveGame = () => {
-    leaveMatch(matchDetails.matchID, matchDetails.playerID, matchDetails.playerCredentials);
+  const leaveGame = (matchID, playerID, playerCredentials) => {
+    leaveMatch(matchID, playerID, playerCredentials);
     backToLobby();
   };
+
+  useEffect(() => {
+    if (!(matchDetails.playerID && matchDetails.matchID && matchDetails.playerCredentials)) {
+      const checkLocalStorageAndLeaveGame = async () => {
+        if (
+          localStorageData.playerID &&
+          localStorageData.matchID &&
+          localStorageData.playerCredentials
+        ) {
+          console.log(localStorageData);
+          const matchData = await getMatch(localStorageData.matchID);
+          if (matchData.players[0].name && matchData.players[1].name) {
+            backToLobby();
+          } else {
+            leaveGame(
+              localStorageData.matchID,
+              localStorageData.playerID,
+              localStorageData.playerCredentials,
+            );
+          }
+        }
+      };
+      checkLocalStorageAndLeaveGame();
+    }
+  }, [localStorageData]);
 
   const handleCardPlay = (card, playerID) => {
     moves.playCard(card, playerID);
@@ -120,13 +151,16 @@ export function TicTacToeBoard({ ctx, G, moves, chatMessages, sendChatMessage })
             </div>
           )}
           <CancelButton onClick={backToLobby} />
-          <Toaster position="top-center" richColors />
         </div>
       ) : (
         <>
           <Loading letters="Matching" />
 
-          <CancelButton onClick={leaveGame} />
+          <CancelButton
+            onClick={() =>
+              leaveGame(matchDetails.matchID, matchDetails.playerID, matchDetails.playerCredentials)
+            }
+          />
         </>
       )}
     </div>
