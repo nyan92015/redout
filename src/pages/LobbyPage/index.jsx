@@ -1,15 +1,19 @@
 import React, { useContext } from 'react';
-import { createNewMatch, findAvailableMatch, joinMatch } from '../../services/matchService';
+import {
+  createNewMatch,
+  findAvailableMatch,
+  joinMatch,
+} from '../../services/matchService';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
 
 import './index.css';
 import Logo from '../../components/Logo';
 import Button from '../../components/Button';
 import useModal from '../../hooks/useModal';
 import Modal from '../../components/Modal';
-import Glare from '../../components/Glare';
+import Glare from '../../utils/Glare';
 import { Match } from '../../App';
+import FadeIn from '../../utils/FadeIn';
 
 const LobbyPage = () => {
   const navigate = useNavigate();
@@ -34,13 +38,7 @@ const LobbyPage = () => {
   const { modalOpen, close, open } = useModal();
 
   return (
-    <motion.div
-      className="lobby-page"
-      initial={{ filter: 'blur(10px)', opacity: 0 }}
-      animate={{ filter: 'blur(0px)', opacity: 1 }}
-      exit={{ filter: 'blur(10px)', opacity: 0 }}
-      transition={{ duration: 0.5 }}
-    >
+    <FadeIn className="lobby-page">
       <div className="logo-container">
         <Logo />
       </div>
@@ -53,8 +51,8 @@ const LobbyPage = () => {
           <h1>How to play</h1>
         </Modal>
       )}
-      <Glare />
-    </motion.div>
+      <Glare size={'10'} />
+    </FadeIn>
   );
 };
 

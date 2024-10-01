@@ -5,7 +5,6 @@
   justify-content: center;
   height: 100vh;
   backdrop-filter: brightness(110%);
-  filter: blur(10px);
 }
 
 .logo-container {
@@ -15,10 +14,4 @@
 .button-container {
   display: flex;
   gap: 40px; /* ボタンの間にスペースを作る */
-}
-
-button {
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
 }

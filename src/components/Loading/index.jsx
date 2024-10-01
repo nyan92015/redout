@@ -2,16 +2,10 @@ import React from 'react';
 import { LineWave } from 'react-loader-spinner';
 import { motion } from 'framer-motion';
 import './index.css';
+import Stagger from '../../utils/Stagger';
+import FadeIn from '../../utils/FadeIn';
 
 const Loading = ({ letters = 'Loading', color = '#4fa94d' }) => {
-  const container = {
-    visible: {
-      transition: {
-        staggerChildren: 0.2,
-      },
-    },
-  };
-
   const waveAnimation = {
     hidden: { y: 0 },
     visible: {
@@ -24,13 +18,7 @@ const Loading = ({ letters = 'Loading', color = '#4fa94d' }) => {
   };
 
   return (
-    <motion.div
-      className="loading"
-      initial={{ filter: 'blur(10px)', opacity: 0 }}
-      animate={{ filter: 'blur(0px)', opacity: 1 }}
-      exit={{ filter: 'blur(10px)', opacity: 0 }}
-      transition={{ duration: 0.8 }}
-    >
+    <FadeIn duration={0.8} className="loading">
       <LineWave
         visible={true}
         height="100"
@@ -38,12 +26,7 @@ const Loading = ({ letters = 'Loading', color = '#4fa94d' }) => {
         color={color}
         ariaLabel="line-wave-loading"
       />
-      <motion.div
-        className="letters-container"
-        variants={container}
-        initial="hidden"
-        animate="visible"
-      >
+      <Stagger duration={0.4} className="letters-container">
         {letters.split('').map((char, index) => (
           <motion.span
             key={index}
@@ -56,7 +39,7 @@ const Loading = ({ letters = 'Loading', color = '#4fa94d' }) => {
             {char === ' ' ? '\u00A0' : char}
           </motion.span>
         ))}
-      </motion.div>
+      </Stagger>
       <LineWave
         visible={true}
         height="100"
@@ -64,7 +47,7 @@ const Loading = ({ letters = 'Loading', color = '#4fa94d' }) => {
         color={color}
         ariaLabel="line-wave-loading"
       />
-    </motion.div>
+    </FadeIn>
   );
 };
 

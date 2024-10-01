@@ -8,7 +8,9 @@ export async function findAvailableMatch() {
     const { matches } = await lobbyClient.listMatches(gameName);
 
     // 空いている席があるマッチを探す
-    const availableMatch = matches.find((match) => match.players.some((player) => !player.name));
+    const availableMatch = matches.find((match) =>
+      match.players.some((player) => !player.name),
+    );
 
     if (availableMatch) {
       const openSeat = availableMatch.players.find((player) => !player.name);
@@ -41,10 +43,14 @@ export async function createNewMatch(numPlayers = 2) {
  */
 export async function joinMatch(matchID, playerID, playerName) {
   try {
-    const { playerCredentials } = await lobbyClient.joinMatch(gameName, matchID, {
-      playerID,
-      playerName,
-    });
+    const { playerCredentials } = await lobbyClient.joinMatch(
+      gameName,
+      matchID,
+      {
+        playerID,
+        playerName,
+      },
+    );
     return playerCredentials;
   } catch (error) {
     console.error('Error joining match:', error);
@@ -57,13 +63,10 @@ export async function joinMatch(matchID, playerID, playerName) {
  */
 export async function leaveMatch(matchID, playerID, playerCredentials) {
   try {
-    const { matches } = await lobbyClient.listMatches(gameName);
-    if (matches.some((matchData) => matchData.matchID === matchID)) {
-      await lobbyClient.leaveMatch(gameName, matchID, {
-        playerID,
-        credentials: playerCredentials,
-      });
-    }
+    await lobbyClient.leaveMatch(gameName, matchID, {
+      playerID,
+      credentials: playerCredentials,
+    });
     console.log(`Player ${playerID} has left match ${matchID}`);
   } catch (error) {
     console.error('Error leaving match:', matchID);
@@ -80,6 +83,21 @@ export async function getMatch(matchID) {
     return match;
   } catch (error) {
     console.error('Error getting match:', error);
+    throw error;
+  }
+}
+
+/**
+ * 全てのマッチ情報を列挙する関数
+ */
+
+export async function getListMatches() {
+  try {
+    const { matches } = await lobbyClient.listMatches(gameName);
+    console.log(matches);
+    return matches;
+  } catch (error) {
+    console.error('Error get list match:');
     throw error;
   }
 }

@@ -6,7 +6,8 @@
 }
 
 .ui-input input {
-  font-family: 'Avenir Next', 'Avenir', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: 'Avenir Next', 'Avenir', 'Helvetica Neue', Helvetica, Arial,
+    sans-serif;
   border: 0;
   background: none;
   padding: 16px 0 16px 0;
@@ -62,7 +63,11 @@
 
 .ui-input input:focus + label span::after,
 .ui-input input.filled + label span::after {
-  background-image: linear-gradient(to right, #6eb1ff 50%, rgba(255, 255, 255, 0) 0%);
+  background-image: linear-gradient(
+    to right,
+    #6eb1ff 50%,
+    rgba(255, 255, 255, 0) 0%
+  );
   background-position: 0% 50%;
   background-size: 200%;
   -webkit-text-fill-color: transparent;

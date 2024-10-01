@@ -1,32 +1,75 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { toast } from 'sonner';
+import { Toaster, toast } from 'sonner';
 import Loading from '../Loading';
 import { Match } from '../../App';
-import { getMatch, leaveMatch } from '../../services/matchService';
+import {
+  getListMatches,
+  getMatch,
+  leaveMatch,
+} from '../../services/matchService';
 import { useNavigate } from 'react-router-dom';
 import CancelButton from '../CancelButton.jsx';
+import { motion } from 'framer-motion';
 
 import './index.css';
 import useLocalStorage from '../../hooks/useLocalStorage.js';
-export function TicTacToeBoard({ ctx, G, moves, chatMessages, sendChatMessage }) {
+import Modal from '../Modal/index.jsx';
+import useModal from '../../hooks/useModal.jsx';
+import GiveUp from '../GiveUp/index.jsx';
+import Glare from '../../utils/Glare.jsx';
+import FlagButton from '../FlagButton/index.jsx';
+import Card from '../Card/index.jsx';
+import CardBoard from '../CardBoard/index.jsx';
+export function TicTacToeBoard({
+  ctx,
+  G,
+  moves,
+  chatMessages,
+  sendChatMessage,
+}) {
   const { matchDetails, setMatchDetails } = useContext(Match);
-  const [localStorageData, setLocalStorageData] = useLocalStorage('matchData', {});
-  const [isPlayerJoined, setPlayerJoined] = useState(false);
+  const [localStorageData, setLocalStorageData] = useLocalStorage(
+    'matchData',
+    {},
+  );
+  const [isPlayerJoined, setIsPlayerJoined] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (matchDetails.playerID && matchDetails.matchID && matchDetails.playerCredentials) {
+    if (matchDetails.enemyName && !isPlayerJoined) {
+      toast.success(`${matchDetails.enemyName} join the game.`);
+    }
+  }, [chatMessages]);
+
+  const backToLobby = () => {
+    setMatchDetails({ playerName: matchDetails.playerName });
+    setLocalStorageData({});
+    navigate('/lobby');
+  };
+
+  const leaveGame = (matchID, playerID, playerCredentials) => {
+    leaveMatch(matchID, playerID, playerCredentials);
+    backToLobby();
+  };
+
+  useEffect(() => {
+    if (
+      matchDetails.playerID &&
+      matchDetails.matchID &&
+      matchDetails.playerCredentials &&
+      !matchDetails.enemyName
+    ) {
       setLocalStorageData(matchDetails);
       if (!isPlayerJoined) {
+        setIsPlayerJoined(true);
         sendChatMessage({
           senderName: matchDetails.playerName,
           message: `${matchDetails.playerName} join the game.`,
         });
-        setPlayerJoined(true);
       }
       (async () => {
         const matchData = await getMatch(matchDetails.matchID);
-        if (matchData.players[0].name && matchData.players[1].name && !matchDetails.enemyName) {
+        if (matchData.players[0].name && matchData.players[1].name) {
           if (matchDetails.playerID === '1') {
             setMatchDetails({
               ...matchDetails,
@@ -47,100 +90,67 @@ export function TicTacToeBoard({ ctx, G, moves, chatMessages, sendChatMessage })
         }
       })();
     }
-  }, [chatMessages, sendChatMessage, matchDetails, setMatchDetails]);
-
-  useEffect(() => {
-    if (chatMessages.length > 0) {
-      if (chatMessages[chatMessages.length - 1].payload.senderName !== matchDetails.playerName) {
-        toast.success(chatMessages[chatMessages.length - 1].payload.message);
-      }
-    }
   }, [chatMessages]);
 
-  const backToLobby = () => {
-    setMatchDetails({ playerName: matchDetails.playerName });
-    setLocalStorageData({});
-    navigate('/lobby');
-  };
-
-  const leaveGame = (matchID, playerID, playerCredentials) => {
-    leaveMatch(matchID, playerID, playerCredentials);
-    backToLobby();
-  };
-
   useEffect(() => {
-    if (!(matchDetails.playerID && matchDetails.matchID && matchDetails.playerCredentials)) {
+    if (
+      !(
+        matchDetails.playerID &&
+        matchDetails.matchID &&
+        matchDetails.playerCredentials
+      )
+    ) {
       const checkLocalStorageAndLeaveGame = async () => {
         if (
           localStorageData.playerID &&
           localStorageData.matchID &&
           localStorageData.playerCredentials
         ) {
-          console.log(localStorageData);
-          const matchData = await getMatch(localStorageData.matchID);
-          if (matchData.players[0].name && matchData.players[1].name) {
+          const matches = await getListMatches();
+          if (
+            !matches.some(
+              (matchData) => matchData.matchID === localStorageData.matchID,
+            )
+          ) {
             backToLobby();
           } else {
-            leaveGame(
-              localStorageData.matchID,
-              localStorageData.playerID,
-              localStorageData.playerCredentials,
-            );
+            const matchData = await getMatch(localStorageData.matchID);
+            if (matchData.players[0].name && matchData.players[1].name) {
+              backToLobby();
+            } else if (matchData.players[0].name || matchData.players[1].name) {
+              leaveGame(
+                localStorageData.matchID,
+                localStorageData.playerID,
+                localStorageData.playerCredentials,
+              );
+            }
           }
         }
       };
       checkLocalStorageAndLeaveGame();
     }
-  }, [localStorageData]);
+  }, []);
 
-  const handleCardPlay = (card, playerID) => {
-    moves.playCard(card, playerID);
-  };
+  const { modalOpen, close, open } = useModal();
 
   return (
-    <div>
+    <motion.div
+      className="board-container"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 1.0 }}
+    >
       {matchDetails.enemyName ? (
         <div className="board">
-          <h2>RedOut Game</h2>
-          <div className="scoreboard">
-            <div>
-              {matchDetails.playerName}: {G.playerData[matchDetails.myID].score}
-            </div>
-            <div>
-              {matchDetails.enemyName}: {G.playerData[matchDetails.enemyID].score}
-            </div>
-          </div>
-          <div className="hands">
-            {G.playerData.map((player, index) => (
-              <div key={index} className="hand">
-                <h3>
-                  {index === matchDetails.myID ? matchDetails.playerName : matchDetails.enemyName}
-                </h3>
-                <div className={index === matchDetails.myID ? 'cards' : 'enemy-cards'}>
-                  {player.hands.map((card, index) => (
-                    <div
-                      key={index}
-                      className="card"
-                      onClick={() => handleCardPlay(card, matchDetails.playerID)} // カードをクリックしたときにプレイ
-                    >
-                      {card}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="round-info">
-            <div>
-              <h3>Round Cards</h3>
-              {G.playerData[matchDetails.myID].roundCard && (
-                <div>{matchDetails.playerName} set </div>
-              )}
-              {G.playerData[matchDetails.enemyID].roundCard && (
-                <div>{matchDetails.enemyName} set</div>
-              )}
-            </div>
-          </div>
+          <CardBoard cardBoardName={'card-board'}>
+            {G.playerData.map((player, index) =>
+              player.hands.map((card) => (
+                <Card cardName={card} player={index} moves={moves} />
+              )),
+            )}
+          </CardBoard>
+
           {ctx.gameover && (
             <div className="game-over">
               Game Over! Player{' '}
@@ -150,7 +160,12 @@ export function TicTacToeBoard({ ctx, G, moves, chatMessages, sendChatMessage })
               wins!
             </div>
           )}
-          <CancelButton onClick={backToLobby} />
+          <FlagButton onClick={open} />
+          {modalOpen && (
+            <Modal handleClose={close}>
+              <GiveUp backToLobby={backToLobby} handleClose={close} />
+            </Modal>
+          )}
         </div>
       ) : (
         <>
@@ -158,11 +173,16 @@ export function TicTacToeBoard({ ctx, G, moves, chatMessages, sendChatMessage })
 
           <CancelButton
             onClick={() =>
-              leaveGame(matchDetails.matchID, matchDetails.playerID, matchDetails.playerCredentials)
+              leaveGame(
+                matchDetails.matchID,
+                matchDetails.playerID,
+                matchDetails.playerCredentials,
+              )
             }
           />
         </>
       )}
-    </div>
+      <Toaster position="top-center" richColors />
+    </motion.div>
   );
 }

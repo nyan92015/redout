@@ -1,10 +1,10 @@
 import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import './index.css';
 import InputField from '../../components/InputField';
 import { useTypewriter } from 'react-simple-typewriter';
 import { Match } from '../../App';
+import FadeIn from '../../utils/FadeIn';
 
 const EnterNamePage = () => {
   const { matchDetails, setMatchDetails } = useContext(Match);
@@ -23,20 +23,17 @@ const EnterNamePage = () => {
   };
 
   return (
-    <motion.div
-      className="enter-name-page"
-      initial={{ filter: 'blur(10px)', opacity: 0 }}
-      animate={{ filter: 'blur(0px)', opacity: 1 }}
-      exit={{ filter: 'blur(10px)', opacity: 0 }}
-      transition={{ duration: 0.3 }}
-    >
-      <div className="background-blur"></div>
-      <h1>Redout.io</h1>
+    <FadeIn className="enter-name-page" duration={3} delay={0.5}>
+      <h1 className="enter-name-page-title">Redout.io</h1>
       <p className="description">{displayText}</p>
       <form onSubmit={handleSubmit}>
-        <InputField value={playerName} setValue={setPlayerName} placeholder={'your name'} />
+        <InputField
+          value={playerName}
+          setValue={setPlayerName}
+          placeholder={'your name'}
+        />
       </form>
-    </motion.div>
+    </FadeIn>
   );
 };
 

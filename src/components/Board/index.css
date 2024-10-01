@@ -1,3 +1,13 @@
+.board-container {
+  height: 100vh;
+}
+.board {
+  height: 100vh;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .enemy-cards {
   pointer-events: none;
 }

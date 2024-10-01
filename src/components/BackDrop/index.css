@@ -7,6 +7,5 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgb(156, 158, 159);
-  opacity: 0.3;
+  background-color: rgba(0, 0, 0, 0.5); /* 背景色に透明度を設定 */
 }

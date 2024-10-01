@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Glare = () => {
+const Glare = ({ size }) => {
   return (
     <div
       className="glare"
@@ -13,7 +13,7 @@ const Glare = () => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backdropFilter: 'blur(10px)',
+        backdropFilter: `blur(${size}px)`,
         pointerEvents: 'none',
       }}
     />

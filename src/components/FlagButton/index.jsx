@@ -1,12 +1,12 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import './index.css';
-import { SlArrowLeftCircle } from 'react-icons/sl';
+import { BsFlag } from 'react-icons/bs';
 
-const CancelButton = ({ onClick }) => {
+const FlagButton = ({ onClick }) => {
   return (
     <motion.div
-      className="cancel-button"
+      className="flag-button"
       whileHover={{
         scale: 1.2,
         transition: {
@@ -20,7 +20,7 @@ const CancelButton = ({ onClick }) => {
         },
       }}
       animate={{
-        y: [-4, 4, -4],
+        y: [-3, 2, -3],
         transition: {
           duration: 3,
           ease: 'easeInOut',
@@ -30,9 +30,9 @@ const CancelButton = ({ onClick }) => {
       }}
       onClick={onClick}
     >
-      <SlArrowLeftCircle className="sl-arrow-left-circle" />
+      <BsFlag className="bs-flag" />
     </motion.div>
   );
 };
 
-export default CancelButton;
+export default FlagButton;

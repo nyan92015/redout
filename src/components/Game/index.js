@@ -4,7 +4,13 @@ const NUM_CARDS_IN_HAND = 5;
 
 function initializeHand() {
   // 5種類のカード (赤ドクロ、白ドクロ、黒ドクロ、白カード、黒カード) を用意する
-  const cards = ['red_skull', 'white_skull', 'black_skull', 'white_card', 'black_card'];
+  const cards = [
+    'red_skull',
+    'white_skull',
+    'black_skull',
+    'white_card',
+    'black_card',
+  ];
   return cards;
 }
 
@@ -97,7 +103,9 @@ export const RedOut = {
       start: true,
       onBegin: dealHands,
       endIf: ({ G }) => {
-        return G.playerData[0].hands.length > 0 && G.playerData[1].hands.length > 0;
+        return (
+          G.playerData[0].hands.length > 0 && G.playerData[1].hands.length > 0
+        );
       },
       next: 'play', // drawフェーズが終了したらplayフェーズに進む
     },

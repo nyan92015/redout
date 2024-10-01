@@ -1,0 +1,23 @@
+.card-board {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 6px solid #ffffff;
+  border-radius: 20px;
+  box-shadow:
+    0px 0px 16px #ffffff,
+    inset 0px 0px 16px #ffffff;
+  height: 84vh;
+  width: 80vw;
+}
+.my-card-board {
+  position: fixed;
+  bottom: 4.6vh;
+  left: 25vw;
+}
+
+.enemy-card-board {
+  position: fixed;
+  top: 4.6vh;
+  left: 25vw;
+}

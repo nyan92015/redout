@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import './index.css';
+import Stagger from '../../utils/Stagger';
 
 const Logo = () => {
   const letters = ['R', 'e', 'd', 'o', 'u', 't', '.', 'i', 'o'];
@@ -8,7 +9,9 @@ const Logo = () => {
   // ランダムにアニメーションを割り当てる関数
   const randomizeAnimations = () => {
     return letters.map((letter) =>
-      Math.random() > 0.65 && letter !== '.' && letter !== 'o' ? 'rotating' : 'child',
+      Math.random() > 0.65 && letter !== '.' && letter !== 'o'
+        ? 'rotating'
+        : 'child',
     );
   };
 
@@ -54,7 +57,7 @@ const Logo = () => {
   };
 
   return (
-    <motion.div className="logo-container" variants={container} initial="hidden" animate="visible">
+    <Stagger staggerDelay={0.2} className="logo-container">
       {letters.map((char, index) => (
         <motion.span
           key={index}
@@ -68,7 +71,7 @@ const Logo = () => {
           {char === ' ' ? '\u00A0' : char}
         </motion.span>
       ))}
-    </motion.div>
+    </Stagger>
   );
 };
 
