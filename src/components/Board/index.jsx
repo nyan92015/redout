@@ -36,6 +36,14 @@ export function TicTacToeBoard({
   const navigate = useNavigate();
 
   useEffect(() => {
+    if(G.gameover){
+      setTimeout(() => {
+        navigate('/lobby');
+      }, 3000);
+    }
+  }, [G.gameover]); 
+
+  useEffect(() => {
     if (matchDetails.enemyName && !isPlayerJoined) {
       toast.success(`${matchDetails.enemyName} join the game.`);
     }
@@ -143,6 +151,12 @@ export function TicTacToeBoard({
     >
       {matchDetails.enemyName ? (
         <div className="board">
+          <div className='test'>
+          <div className='my-score'>{G.playerData[matchDetails.myID].roundCard && `${matchDetails.playerName} : set`}</div>
+          <div className='enemy-score'>{G.playerData[matchDetails.enemyID].roundCard && `${matchDetails.enemyName} : set`}</div>
+            <div className='my-score'>{`${matchDetails.playerName} : ${G.playerData[matchDetails.myID].score}`}</div>
+            <div className='enemy-score'>{`${matchDetails.enemyName} : ${G.playerData[matchDetails.enemyID].score}`}</div>
+            </div>
           <CardBoard cardBoardName={'card-board'}>
             {G.playerData.map((player, index) =>
               player.hands.map((card) => (
