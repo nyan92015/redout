@@ -36,14 +36,6 @@ export function TicTacToeBoard({
   const navigate = useNavigate();
 
   useEffect(() => {
-    if(G.gameover){
-      setTimeout(() => {
-        navigate('/lobby');
-      }, 3000);
-    }
-  }, [G.gameover]); 
-
-  useEffect(() => {
     if (matchDetails.enemyName && !isPlayerJoined) {
       toast.success(`${matchDetails.enemyName} join the game.`);
     }
