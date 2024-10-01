@@ -10,7 +10,9 @@
   padding: 10px;
   border: 2px solid #ffd900;
   border-radius: 50%;
-  box-shadow: 0px 0px 8px #ffd900, inset 0px 0px 8px #ffd900;
+  box-shadow:
+    0px 0px 8px #ffd900,
+    inset 0px 0px 8px #ffd900;
 }
 .bs-flag {
   color: #ffd900;

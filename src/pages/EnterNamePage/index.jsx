@@ -17,7 +17,7 @@ const EnterNamePage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (playerName) {
-      setMatchDetails({ ...matchDetails, playerName });
+      setMatchDetails({ ...matchDetails, playerName, isPlayingSound: true });
       navigate('/lobby');
     }
   };

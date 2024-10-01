@@ -8,7 +8,7 @@ const CardBoard = ({ cardBoardName, children }) => {
   return (
     <motion.div ref={constraintsRef}>
       <Stagger className={`card-board ${cardBoardName}`} staggerDelay={0.2}>
-      {children}
+        {children}
       </Stagger>
     </motion.div>
   );

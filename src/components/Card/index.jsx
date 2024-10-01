@@ -10,27 +10,26 @@ const Card = ({ cardName, player, moves }) => {
     moves.playCard(cardName, matchDetails.playerID);
   };
   const variants = {
-    hidden: {  opacity: 0 }, 
+    hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        duration: 4, 
-        ease: 'easeOut', 
-        type: 'spring', 
+        duration: 4,
+        ease: 'easeOut',
+        type: 'spring',
         stiffness: 50,
       },
     },
   };
 
-  
-  const cardClassName = 
-  cardName === 'white_skull' || cardName === 'white_card'
-    ? 'white-card'
-    : cardName === 'black_skull' || cardName === 'black_card'
-    ? 'black-card'
-    : cardName === 'red_skull'
-    ? 'black-skull'
-    : '';
+  const cardClassName =
+    cardName === 'white_skull' || cardName === 'white_card'
+      ? 'white-card'
+      : cardName === 'black_skull' || cardName === 'black_card'
+        ? 'black-card'
+        : cardName === 'red_skull'
+          ? 'black-skull'
+          : '';
 
   return (
     <motion.div
