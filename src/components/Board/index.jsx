@@ -16,9 +16,7 @@ import useLocalStorage from '../../hooks/useLocalStorage.js';
 import Modal from '../Modal/index.jsx';
 import useModal from '../../hooks/useModal.jsx';
 import GiveUp from '../GiveUp/index.jsx';
-import Glare from '../../utils/Glare.jsx';
 import FlagButton from '../FlagButton/index.jsx';
-import Card from '../Card/index.jsx';
 import CardBoard from '../CardBoard/index.jsx';
 export function TicTacToeBoard({
   ctx,
@@ -132,7 +130,6 @@ export function TicTacToeBoard({
   }, []);
 
   const { modalOpen, close, open } = useModal();
-
   return (
     <motion.div
       className="board-container"
@@ -155,20 +152,31 @@ export function TicTacToeBoard({
             <div className="my-score">{`${matchDetails.playerName} : ${G.playerData[matchDetails.myID].score}`}</div>
             <div className="enemy-score">{`${matchDetails.enemyName} : ${G.playerData[matchDetails.enemyID].score}`}</div>
           </div>
-          <CardBoard cardBoardName={'card-board'}>
-            {G.playerData.map((player, index) =>
-              player.hands.map((card) => (
-                <Card cardName={card} player={index} moves={moves} />
-              )),
-            )}
-          </CardBoard>
+          <div className="card-board-container">
+            <CardBoard
+              cardBoardName={'card-board'}
+              G={G}
+              moves={moves}
+              myID={matchDetails.myID}
+              enemyID={matchDetails.enemyID}
+              boardID={0}
+            />
+            <CardBoard
+              cardBoardName={'card-board'}
+              G={G}
+              moves={moves}
+              myID={matchDetails.enemyID}
+              enemyID={matchDetails.myID}
+              boardID={1}
+            />
+          </div>
 
           {ctx.gameover && (
             <div className="game-over">
-              Game Over! Player{' '}
+              Game Over!
               {ctx.gameover.winner === matchDetails.myID
                 ? matchDetails.playerName
-                : matchDetails.enemyName}{' '}
+                : matchDetails.enemyName}
               wins!
             </div>
           )}

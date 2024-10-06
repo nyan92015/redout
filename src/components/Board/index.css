@@ -3,6 +3,7 @@
 }
 .board {
   height: 100vh;
+  width: 100vw;
   color: white;
   display: flex;
   align-items: center;
@@ -20,6 +21,14 @@
   justify-content: center;
   font-size: 40px;
   gap: 40px;
+}
+.card-board-container {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 120px;
 }
 .my-score {
   color: red;

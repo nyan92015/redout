@@ -94,7 +94,6 @@ export async function getMatch(matchID) {
 export async function getListMatches() {
   try {
     const { matches } = await lobbyClient.listMatches(gameName);
-    console.log(matches);
     return matches;
   } catch (error) {
     console.error('Error get list match:');

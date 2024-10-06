@@ -5,6 +5,7 @@ const FadeIn = ({ children, className, delay = 0, duration = 0.5 }) => {
   const variants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1 },
+    exit: { opacity: 0 },
   };
 
   return (

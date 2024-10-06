@@ -1,6 +1,4 @@
 .card {
-  height: 7vw;
-  width: 7vw;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -38,12 +36,10 @@
   color: #0000ff;
 }
 .black-skull.red-card {
-  background-color: rgba(255, 0, 0, 0.5);
-  filter: brightness(1.1);
+  background-color: rgba(255, 0, 0, 0.7);
 }
 .black-skull.blue-card {
-  background-color: rgba(0, 26, 255, 0.5);
-  filter: brightness(1.1);
+  background-color: rgba(0, 26, 255, 0.7);
 }
 .black-skull.red-skull {
   color: #ff0000;

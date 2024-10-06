@@ -2,28 +2,46 @@ import { ActivePlayers, INVALID_MOVE } from 'boardgame.io/core';
 
 const NUM_CARDS_IN_HAND = 5;
 
-function initializeHand() {
+function initializeHand(playerID) {
   // 5種類のカード (赤ドクロ、白ドクロ、黒ドクロ、白カード、黒カード) を用意する
   const cards = [
-    'red_skull',
-    'white_skull',
-    'black_skull',
-    'white_card',
-    'black_card',
+    {
+      name: 'red_skull',
+      id: playerID * NUM_CARDS_IN_HAND + 1,
+    },
+    {
+      name: 'white_skull',
+      id: playerID * NUM_CARDS_IN_HAND + 2,
+    },
+    {
+      name: 'black_skull',
+      id: playerID * NUM_CARDS_IN_HAND + 3,
+    },
+    {
+      name: 'white_card',
+      id: playerID * NUM_CARDS_IN_HAND + 4,
+    },
+    {
+      name: 'black_card',
+      id: playerID * NUM_CARDS_IN_HAND + 5,
+    },
   ];
   return cards;
 }
 
 function dealHands({ G }) {
   // 手札が空なら配り直す
-  if (G.playerData[0].hands.length === 0) {
-    G.playerData[0].hands = initializeHand();
-    G.playerData[1].hands = initializeHand();
+  if (G.cardCount === 0) {
+    G.playerData[0].hands = initializeHand(0);
+    G.playerData[1].hands = initializeHand(1);
+    G.cardCount = 10;
   }
 }
 
-function playCard({ G }, card, playerID) {
-  G.playerData[playerID].roundCard = card;
+function playCard({ G }, cardID, cardName, playerID) {
+  G.playerData[playerID].roundCardID = cardID;
+  G.playerData[playerID].roundCard = cardName;
+  G.isWaiting = true;
 }
 
 function judgeWinner(G, events) {
@@ -36,14 +54,19 @@ function judgeWinner(G, events) {
 }
 
 function deleteCard(G) {
-  G.playerData[0].hands = G.playerData[0].hands.filter(
-    (handCard) => handCard !== G.playerData[0].roundCard,
+  G.playerData[0].hands = G.playerData[0].hands.map((handCard) =>
+    handCard && handCard.id === G.playerData[0].roundCardID ? null : handCard,
   );
-  G.playerData[1].hands = G.playerData[1].hands.filter(
-    (handCard) => handCard !== G.playerData[1].roundCard,
+
+  G.playerData[1].hands = G.playerData[1].hands.map((handCard) =>
+    handCard && handCard.id === G.playerData[1].roundCardID ? null : handCard,
   );
+
   G.playerData[0].roundCard = null;
   G.playerData[1].roundCard = null;
+  G.playerData[0].roundCardID = null;
+  G.playerData[1].roundCardID = null;
+  G.cardCount -= 2;
 }
 
 function reset({ G, events }) {
@@ -85,6 +108,10 @@ function judgeRoundWinner({ G }) {
   G.round.winner = winner;
 }
 
+function unlockWaiting({ G }) {
+  G.isWaiting = false;
+}
+
 export const RedOut = {
   name: 'redout',
   setup: () => ({
@@ -92,41 +119,42 @@ export const RedOut = {
     round: {
       winner: null,
     },
-    playerData: Array(2).fill({
-      hands: initializeHand(),
+    cardCount: 10,
+    playerData: Array.from({ length: 2 }, (_, index) => ({
+      hands: initializeHand(index), // index を引数として渡す
+      roundCardID: null,
       roundCard: null,
       score: 0,
-    }),
+    })),
+    isWaiting: true,
   }),
   phases: {
     draw: {
       start: true,
       onBegin: dealHands,
       endIf: ({ G }) => {
-        return (
-          G.playerData[0].hands.length > 0 && G.playerData[1].hands.length > 0
-        );
+        return G.cardCount > 0;
       },
-      next: 'play', // drawフェーズが終了したらplayフェーズに進む
+      next: 'play',
     },
 
     play: {
-      moves: { playCard },
+      moves: { playCard, unlockWaiting },
       turn: {
         activePlayers: ActivePlayers.ALL,
       },
       endIf: ({ G }) => {
-        // 両プレイヤーがカードを選んでいるかを確認
         if (
           G.playerData &&
           G.playerData[0].roundCard !== null &&
-          G.playerData[1].roundCard !== null
+          G.playerData[1].roundCard !== null &&
+          !G.isWaiting
         ) {
-          return true; // フェーズを終了
+          return true;
         }
         return false;
       },
-      next: 'judge', // playフェーズが終了したらjudgeフェーズに進む
+      next: 'judge',
     },
 
     judge: {
@@ -145,7 +173,7 @@ export const RedOut = {
           G.playerData[0].roundCard === null &&
           G.playerData[1].roundCard === null
         ) {
-          return true; // フェーズを終了
+          return true;
         }
         return false;
       },

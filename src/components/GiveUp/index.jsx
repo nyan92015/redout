@@ -16,7 +16,7 @@ const GiveUp = ({ backToLobby, handleClose }) => {
         },
       }}
     >
-      <h1 className="giveup-title">Give Up?</h1>
+      <h1 className="giveup-title">give up?</h1>
       <div className="button-container">
         <Button onClick={backToLobby} color="red">
           Yes . . .

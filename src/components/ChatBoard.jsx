@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 const ChatBoard = ({ chatMessages, sendChatMessage }) => {
   const [message, setMessage] = useState('');
-  console.log(chatMessages);
   // メッセージを送信するハンドラー
   const handleSendMessage = () => {
     if (message.trim() !== '') {
