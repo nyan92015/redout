@@ -170,6 +170,7 @@ const CardBoard = ({ cardBoardName, G, moves, myID, enemyID, boardID }) => {
                     cardID={card.id}
                     playerID={myID}
                     boardID={boardID}
+                    isSubmit={isMyCardSubmit && isEnemyCardSubmit}
                     moves={moves}
                   />
                 );

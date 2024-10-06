@@ -12,6 +12,7 @@ const Card = ({
   cardID,
   playerID,
   boardID,
+  isSubmit,
   moves,
 }) => {
   const handleAnimationComplete = () => {
@@ -34,12 +35,12 @@ const Card = ({
     const submitVariants = {
       initial: {
         opacity: boardID === 0 ? 1 : 0,
-        x:
-          boardID === 0
+        x: 
+          boardID === 0 || isSubmit
             ? cardPosition.x - submitBoxPosition.x
             : (submitBoxSize - cardSize) / 2 - 5,
         y:
-          boardID === 0
+          boardID === 0 || isSubmit
             ? cardPosition.y - submitBoxPosition.y
             : (submitBoxSize - cardSize) / 2 - 5,
       },
