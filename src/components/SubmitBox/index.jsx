@@ -52,7 +52,8 @@ const SubmitBox = React.memo(
       prevProps.submitBoxPosition === nextProps.submitBoxPosition &&
       prevProps.submitBoxSize === nextProps.submitBoxSize &&
       prevProps.isSubmit === nextProps.isSubmit &&
-      prevProps.isMine === nextProps.isMine
+      prevProps.isMine === nextProps.isMine &&
+      prevProps.children === nextProps.children
     );
   },
 );

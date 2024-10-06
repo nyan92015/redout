@@ -59,7 +59,7 @@ const CardBoard = ({ cardBoardName, G, moves, myID, enemyID, boardID }) => {
       return cardPositions[G.playerData[myID].roundCardID - 1].position;
     }
     return null;
-  }, [isMyCardSubmit]);
+  }, [G]);
 
   useEffect(() => {
     // 親要素のサイズを取得
