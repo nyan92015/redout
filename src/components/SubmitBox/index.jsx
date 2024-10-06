@@ -46,16 +46,7 @@ const SubmitBox = React.memo(
         {children}
       </motion.div>
     );
-  },
-  (prevProps, nextProps) => {
-    return (
-      prevProps.submitBoxPosition === nextProps.submitBoxPosition &&
-      prevProps.submitBoxSize === nextProps.submitBoxSize &&
-      prevProps.isSubmit === nextProps.isSubmit &&
-      prevProps.isMine === nextProps.isMine &&
-      prevProps.children === nextProps.children
-    );
-  },
+  }
 );
 
 export default SubmitBox;

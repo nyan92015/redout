@@ -181,7 +181,8 @@ const CardBoard = ({ cardBoardName, G, moves, myID, enemyID, boardID }) => {
           !(isMyCardSubmit && isEnemyCardSubmit) &&
           card &&
           card.id !== G.playerData[myID].roundCardID &&
-          cardPositions[card.id - 1]
+          cardPositions[card.id - 1] &&
+          (!isMyCardSubmit || isMine)
         ) {
           return (
             <Card

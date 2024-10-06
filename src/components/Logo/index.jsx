@@ -16,16 +16,6 @@ const Logo = () => {
   };
 
   const animationTypes = randomizeAnimations();
-  // アニメーション設定
-  const container = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-      },
-    },
-  };
 
   const child = {
     hidden: { opacity: 0, y: 20 },
