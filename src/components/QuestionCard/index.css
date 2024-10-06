@@ -1,0 +1,17 @@
+.question-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 6px solid #0000ff;
+  border-radius: 50%;
+  box-shadow:
+    0px 0px 20px #0000ff,
+    inset 0px 0px 10px #0000ff;
+  pointer-events: none;
+}
+.question {
+  height: 70%;
+  width: 70%;
+  background-color: rgba(51, 0, 255, 0);
+  color: #0000ff;
+}

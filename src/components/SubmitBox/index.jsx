@@ -46,7 +46,7 @@ const SubmitBox = React.memo(
         {children}
       </motion.div>
     );
-  }
+  },
 );
 
 export default SubmitBox;

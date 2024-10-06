@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import './index.css';
 import Card from '../Card';
 import SubmitBox from '../SubmitBox';
+import QuestionCard from '../QuestionCard';
 
 const CardBoard = ({ cardBoardName, G, moves, myID, enemyID, boardID }) => {
   const borderSize = 10;
@@ -18,7 +19,7 @@ const CardBoard = ({ cardBoardName, G, moves, myID, enemyID, boardID }) => {
       return boardRect.width / 5;
     }
     return null;
-  }, [boardRef.current]); 
+  }, [boardRef.current]);
 
   const submitBoxSize = useMemo(() => {
     if (boardRef.current) {
@@ -32,7 +33,7 @@ const CardBoard = ({ cardBoardName, G, moves, myID, enemyID, boardID }) => {
     if (boardRef.current && submitBoxSize) {
       const boardRect = boardRef.current.getBoundingClientRect();
       return {
-        x: (boardRect.left + boardRect.right - submitBoxSize) / 2 ,
+        x: (boardRect.left + boardRect.right - submitBoxSize) / 2,
         y: (boardRect.top + boardRect.bottom - submitBoxSize) / 2,
       };
     }
@@ -54,12 +55,12 @@ const CardBoard = ({ cardBoardName, G, moves, myID, enemyID, boardID }) => {
     return false;
   }, [boardID]);
 
-  const selectedCardPositions = useMemo(() => {
+  const selectedCardPosition = useMemo(() => {
     if (isMyCardSubmit) {
       return cardPositions[G.playerData[myID].roundCardID - 1].position;
     }
     return null;
-  }, [G]);
+  }, [G.playerData]);
 
   useEffect(() => {
     // 親要素のサイズを取得
@@ -79,10 +80,8 @@ const CardBoard = ({ cardBoardName, G, moves, myID, enemyID, boardID }) => {
           cardOrder += 1;
         return {
           position: {
-            x:
-              (boardRect.left + boardRect.right - cardSize) / 2,
-            y:
-              (boardRect.top + boardRect.bottom - cardSize) / 2 ,
+            x: (boardRect.left + boardRect.right - cardSize) / 2,
+            y: (boardRect.top + boardRect.bottom - cardSize) / 2,
           },
           velocity: {
             x: Math.cos(angle) * speed,
@@ -157,21 +156,31 @@ const CardBoard = ({ cardBoardName, G, moves, myID, enemyID, boardID }) => {
               isMyCardSubmit &&
               card &&
               card.id === G.playerData[myID].roundCardID &&
-              selectedCardPositions
+              selectedCardPosition
             ) {
-              return (
-                <Card
-                  key={cardIndex}
-                  submitBoxPosition={submitBoxPosition}
-                  cardPosition={selectedCardPositions}
-                  cardSize={cardSize}
-                  submitBoxSize={submitBoxSize}
-                  cardName={card.name}
-                  cardID={card.id}
-                  playerID={myID}
-                  moves={moves}
-                />
-              );
+              if ((isMyCardSubmit && isEnemyCardSubmit) || isMine) {
+                return (
+                  <Card
+                    key={cardIndex}
+                    submitBoxPosition={submitBoxPosition}
+                    cardPosition={selectedCardPosition}
+                    cardSize={cardSize}
+                    submitBoxSize={submitBoxSize}
+                    cardName={card.name}
+                    cardID={card.id}
+                    playerID={myID}
+                    boardID={boardID}
+                    moves={moves}
+                  />
+                );
+              } else {
+                return (
+                  <QuestionCard
+                    cardSize={cardSize}
+                    submitBoxSize={submitBoxSize}
+                  />
+                );
+              }
             }
           })}
         </SubmitBox>
@@ -192,6 +201,7 @@ const CardBoard = ({ cardBoardName, G, moves, myID, enemyID, boardID }) => {
               cardName={card.name}
               cardID={card.id}
               playerID={myID}
+              boardID={boardID}
               moves={moves}
             />
           );
