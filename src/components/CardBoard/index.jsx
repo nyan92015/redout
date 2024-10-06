@@ -55,11 +55,11 @@ const CardBoard = ({ cardBoardName, G, moves, myID, enemyID, boardID }) => {
   }, [boardID]);
 
   const selectedCardPositions = useMemo(() => {
-    if (isMyCardSubmit && isEnemyCardSubmit) {
+    if (isMyCardSubmit) {
       return cardPositions[G.playerData[myID].roundCardID - 1].position;
     }
     return null;
-  }, [isMyCardSubmit, isEnemyCardSubmit]);
+  }, [isMyCardSubmit]);
 
   useEffect(() => {
     // 親要素のサイズを取得
@@ -154,7 +154,7 @@ const CardBoard = ({ cardBoardName, G, moves, myID, enemyID, boardID }) => {
         >
           {G.playerData[myID].hands.map((card, cardIndex) => {
             if (
-              isMyCardSubmit && isEnemyCardSubmit &&
+              isMyCardSubmit &&
               card &&
               card.id === G.playerData[myID].roundCardID &&
               selectedCardPositions
@@ -180,6 +180,7 @@ const CardBoard = ({ cardBoardName, G, moves, myID, enemyID, boardID }) => {
         if (
           !(isMyCardSubmit && isEnemyCardSubmit) &&
           card &&
+          card.id !== G.playerData[myID].roundCardID &&
           cardPositions[card.id - 1]
         ) {
           return (
