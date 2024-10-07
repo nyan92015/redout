@@ -13,11 +13,10 @@ const Card = ({
   playerID,
   boardID,
   isSubmit,
-  G,
   moves,
 }) => {
   const handleAnimationComplete = () => {
-    moves.unlockWaiting();
+    moves.unlockWaiting(playerID);
   };
   const handleCardPlay = () => {
     moves.playCard(cardID, cardName, playerID);

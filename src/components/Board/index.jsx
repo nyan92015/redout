@@ -155,6 +155,7 @@ export function TicTacToeBoard({
           <div className="card-board-container">
             <CardBoard
               G={G}
+              ctx={ctx}
               moves={moves}
               myID={matchDetails.myID}
               enemyID={matchDetails.enemyID}
