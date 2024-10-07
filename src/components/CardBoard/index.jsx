@@ -5,7 +5,7 @@ import Card from '../Card';
 import SubmitBox from '../SubmitBox';
 import QuestionCard from '../QuestionCard';
 
-const CardBoard = ({ cardBoardName, G, moves, myID, enemyID, boardID }) => {
+const CardBoard = ({ G, moves, myID, enemyID, boardID }) => {
   const borderSize = 10;
   const [cardPositions, setCardPositions] = useState([]);
   const requestRef = useRef();
@@ -142,8 +142,11 @@ const CardBoard = ({ cardBoardName, G, moves, myID, enemyID, boardID }) => {
     return () => cancelAnimationFrame(requestRef.current);
   }, [cardSize]);
 
+  useEffect(() => {
+    console.log(G.round.winner);
+  }, [G.round.winner]);
   return (
-    <motion.div ref={boardRef} className={`card-board ${cardBoardName}`}>
+    <motion.div ref={boardRef} className={`card-board`}>
       {submitBoxPosition && (
         <SubmitBox
           submitBoxPosition={submitBoxPosition}
@@ -171,6 +174,7 @@ const CardBoard = ({ cardBoardName, G, moves, myID, enemyID, boardID }) => {
                     playerID={myID}
                     boardID={boardID}
                     isSubmit={isMyCardSubmit && isEnemyCardSubmit}
+                    G={G}
                     moves={moves}
                   />
                 );
@@ -203,6 +207,7 @@ const CardBoard = ({ cardBoardName, G, moves, myID, enemyID, boardID }) => {
               cardID={card.id}
               playerID={myID}
               boardID={boardID}
+              G={G}
               moves={moves}
             />
           );

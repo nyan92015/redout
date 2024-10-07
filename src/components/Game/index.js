@@ -69,6 +69,10 @@ function deleteCard(G) {
   G.cardCount -= 2;
 }
 
+function endPhase({ events }) {
+  events.endPhase();
+}
+
 function reset({ G, events }) {
   judgeWinner(G, events);
   deleteCard(G);
@@ -126,7 +130,7 @@ export const RedOut = {
       roundCard: null,
       score: 0,
     })),
-    isWaiting: true,
+    isWaiting: true
   }),
   phases: {
     draw: {
@@ -139,22 +143,21 @@ export const RedOut = {
     },
 
     play: {
-      moves: { playCard, unlockWaiting },
+      moves: { playCard, endPhase },
       turn: {
         activePlayers: ActivePlayers.ALL,
       },
       endIf: ({ G }) => {
         if (
-          G.playerData &&
+          G.playerData !== null &&
           G.playerData[0].roundCard !== null &&
-          G.playerData[1].roundCard !== null &&
-          !G.isWaiting
+          G.playerData[1].roundCard !== null
         ) {
           return true;
         }
         return false;
       },
-      next: 'judge',
+      next: 'waiting',
     },
 
     judge: {
@@ -169,9 +172,10 @@ export const RedOut = {
       onBegin: reset,
       endIf: ({ G }) => {
         if (
-          G.playerData &&
+          G.playerData !== null &&
           G.playerData[0].roundCard === null &&
-          G.playerData[1].roundCard === null
+          G.playerData[1].roundCard === null &&
+          !G.round.winner
         ) {
           return true;
         }
@@ -179,5 +183,15 @@ export const RedOut = {
       },
       next: 'draw',
     },
+    waiting :{
+      moves: { unlockWaiting },
+      turn: {
+        activePlayers: ActivePlayers.ALL,
+      },
+      endIf: ({ G }) => {
+        return !G.isWaiting
+      },
+      next: 'judge'
+    }
   },
 };

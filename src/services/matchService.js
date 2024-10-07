@@ -67,7 +67,6 @@ export async function leaveMatch(matchID, playerID, playerCredentials) {
       playerID,
       credentials: playerCredentials,
     });
-    console.log(`Player ${playerID} has left match ${matchID}`);
   } catch (error) {
     console.error('Error leaving match:', matchID);
     throw error;

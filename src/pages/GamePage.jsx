@@ -20,7 +20,6 @@ const GamePage = () => {
     board: TicTacToeBoard,
     multiplayer: SocketIO({ server: SERVER_URL }),
     loading: () => <Loading letters="Connecting" color="yellow" />,
-    debug: false,
   });
   return (
     <RedOutClient

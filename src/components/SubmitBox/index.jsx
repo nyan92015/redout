@@ -4,12 +4,11 @@ import './index.css';
 
 const SubmitBox = React.memo(
   ({ submitBoxPosition, submitBoxSize, isSubmit, isMine, children }) => {
-    console.log(isMine, children);
     return (
       <motion.div
         className="submit-box"
         initial={{
-          backgroundColor: '#292929',
+          backgroundColor: '#2a2a2a',
           borderWidth: '6px',
           borderColor: '#ffffff',
           boxShadow: '0 0 30px #ffffff, inset 0 0 30px #ffffff',
