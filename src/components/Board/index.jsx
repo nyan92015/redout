@@ -12,7 +12,7 @@ import CancelButton from '../CancelButton.jsx';
 import { motion, useAnimation } from 'framer-motion';
 
 import './index.css';
-import useLocalStorage from '../../hooks/useLocalStorage.js';
+import useLocalStorage from '../../hooks/useLocalStorage.jsx';
 import Modal from '../Modal/index.jsx';
 import useModal from '../../hooks/useModal.jsx';
 import GiveUpModal from '../GiveUpModal/index.jsx';

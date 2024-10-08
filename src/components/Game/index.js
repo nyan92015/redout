@@ -40,13 +40,13 @@ function dealHands({ G }) {
 
 function playCard({ G }, cardID, cardName, playerID) {
   G.playerData[playerID].isWaiting = true;
+  G.playCardCount += 1;
   G.next = 'judge';
   G.playerData[playerID].roundCardID = cardID;
   G.playerData[playerID].roundCard = cardName;
 }
 
 function judgeWinner(G, events) {
-  console.log(G);
   // 勝敗条件：どちらかが3ポイント先取
   if (G.playerData[0].score >= 3) {
     events.endGame({ winner: 0 });
@@ -138,9 +138,10 @@ export const RedOut = {
       roundCardID: null,
       roundCard: null,
       score: 0,
-      isWaiting: true,
+      isWaiting: false,
     })),
     next: '',
+    playCardCount: 0
   }),
   phases: {
     draw: {
@@ -209,9 +210,7 @@ export const RedOut = {
       endIf: ({ G }) => {
         return !G.playerData[0].isWaiting && !G.playerData[1].isWaiting;
       },
-      next: ({ G }) => {
-        return G.next ? G.next : 'draw';
-      },
+      next: ({ G }) => G.next || 'draw',
     },
   },
 };

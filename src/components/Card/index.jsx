@@ -16,10 +16,10 @@ const Card = ({
   moves,
 }) => {
   const handleAnimationComplete = () => {
-    moves.unlockWaiting(playerID);
+     moves.unlockWaiting(playerID);
   };
   const handleCardPlay = () => {
-    moves.playCard(cardID, cardName, playerID);
+    if(boardID === 0) moves.playCard(cardID, cardName, playerID);
   };
 
   const cardClassName =

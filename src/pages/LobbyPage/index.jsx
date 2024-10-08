@@ -14,9 +14,8 @@ import Modal from '../../components/Modal';
 import Glare from '../../utils/Glare';
 import { Match } from '../../App';
 import FadeIn from '../../utils/FadeIn';
-import useSound from 'use-sound';
 
-const LobbyPage = ({ play }) => {
+const LobbyPage = () => {
   const navigate = useNavigate();
   const { matchDetails, setMatchDetails } = useContext(Match);
   const setUpGame = async () => {
@@ -38,12 +37,6 @@ const LobbyPage = ({ play }) => {
 
   const { modalOpen, close, open } = useModal();
 
-  useEffect(() => {
-    if (matchDetails.isPlayingSound)
-      setTimeout(() => {
-        play();
-      }, 800); // 2000ミリ秒（2秒）;
-  }, [matchDetails.isPlayingSound]);
   return (
     <FadeIn className="lobby-page">
       <div className="logo-container">
