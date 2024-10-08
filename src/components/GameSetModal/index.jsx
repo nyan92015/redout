@@ -20,7 +20,13 @@ const GameSetModal = ({ isWin, winnerName, onClick }) => {
         {isWin ? 'You win !' : 'You lose ...'}
       </h1>
       <div className="button-container">
-        <Button onClick={onClick} color="#ffffff" backgroundColor={isWin ? 'rgba(107, 57, 57, 0.681)' : 'rgba(59, 57, 107, 0.681)'}>
+        <Button
+          onClick={onClick}
+          color="#ffffff"
+          backgroundColor={
+            isWin ? 'rgba(107, 57, 57, 0.681)' : 'rgba(59, 57, 107, 0.681)'
+          }
+        >
           Back to lobby
         </Button>
       </div>

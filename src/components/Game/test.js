@@ -30,7 +30,6 @@ function initializeHand(playerID) {
 }
 
 function dealHands({ G }) {
-  console.log(G, 'aaa');
   // 手札が空なら配り直す
   if (G.cardCount === 0) {
     G.playerData[0].hands = initializeHand(0);
@@ -47,7 +46,6 @@ function playCard({ G }, cardID, cardName, playerID) {
 }
 
 function judgeWinner(G, events) {
-  console.log(G);
   // 勝敗条件：どちらかが3ポイント先取
   if (G.playerData[0].score >= 3) {
     events.endGame({ winner: 0 });
@@ -70,6 +68,10 @@ function deleteCard(G) {
   G.playerData[0].roundCardID = null;
   G.playerData[1].roundCardID = null;
   G.cardCount -= 2;
+}
+
+function giveUp({ events }, playerID) {
+  events.endGame({ winner: playerID });
 }
 
 function reset({ G, events }) {
@@ -114,16 +116,8 @@ function judgeRoundWinner({ G }) {
   G.next = 'resolve';
 }
 
-function giveUp({ events }, playerID) {
-  events.endGame({ winner: playerID });
-}
-
 function unlockWaiting({ G }, playerID) {
   G.playerData[playerID].isWaiting = false;
-}
-function checkWaiting({ G, events }) {
-  if (!G.playerData[0].isWaiting && !G.playerData[1].isWaiting)
-    events.endPhase();
 }
 
 export const RedOut = {
@@ -146,7 +140,7 @@ export const RedOut = {
   phases: {
     draw: {
       start: true,
-      onBegin: dealHands,
+      onBegin: { dealHands, giveUp },
       endIf: ({ G }) => {
         return G.cardCount > 0;
       },
@@ -154,7 +148,7 @@ export const RedOut = {
     },
 
     play: {
-      moves: { playCard, unlockWaiting, giveUp },
+      moves: { playCard, giveUp },
       turn: {
         activePlayers: ActivePlayers.ALL,
       },
@@ -172,7 +166,7 @@ export const RedOut = {
     },
 
     judge: {
-      onBegin: judgeRoundWinner,
+      onBegin: { judgeRoundWinner, giveUp },
       endIf: ({ G }) => {
         return (
           G.round.winner &&
@@ -184,7 +178,7 @@ export const RedOut = {
     },
 
     resolve: {
-      onBegin: reset,
+      onBegin: { reset, giveUp },
       endIf: ({ G }) => {
         if (
           G.playerData !== null &&
@@ -199,11 +193,10 @@ export const RedOut = {
       next: 'draw',
     },
     waiting: {
-      moves: { unlockWaiting, checkWaiting, giveUp },
+      moves: { unlockWaiting, giveUp },
       turn: {
         activePlayers: ActivePlayers.ALL,
       },
-      onBegin: checkWaiting,
       endIf: ({ G }) => {
         return !G.playerData[0].isWaiting && !G.playerData[1].isWaiting;
       },

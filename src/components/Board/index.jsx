@@ -44,6 +44,7 @@ export function TicTacToeBoard({
   const backToLobby = () => {
     setMatchDetails({ playerName: matchDetails.playerName });
     setLocalStorageData({});
+    moves.giveUp(matchDetails.enemyID);
     navigate('/lobby');
   };
 
