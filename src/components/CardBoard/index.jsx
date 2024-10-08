@@ -1,13 +1,14 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useAnimation } from 'framer-motion';
 import './index.css';
 import Card from '../Card';
 import SubmitBox from '../SubmitBox';
 import QuestionCard from '../QuestionCard';
 
-const CardBoard = ({ G, ctx, moves, myID, enemyID, boardID }) => {
+const CardBoard = ({ G, moves, myID, enemyID, boardID }) => {
   const borderSize = 10;
   const [cardPositions, setCardPositions] = useState([]);
+  const [isWinner, setIsWinner] = useState(false);
   const requestRef = useRef();
   const boardRef = useRef();
 
@@ -142,8 +143,59 @@ const CardBoard = ({ G, ctx, moves, myID, enemyID, boardID }) => {
     return () => cancelAnimationFrame(requestRef.current);
   }, [cardSize]);
 
+  const controls = useAnimation();
+
+  useEffect(() => {
+    if (G.round.winner === 0 || G.round.winner === 3) {
+      controls.start({
+        backgroundColor: ['#2c2c2c'],
+        borderWidth: ['6px'],
+        borderColor: ['#ffffff'],
+        boxShadow: ['0px 0px 30px #ffffff , inset 0px 0px 30px #ffffff'],
+      });
+    } else if (G.round.winner === myID + 1) {
+      if (isMine) {
+        controls.start({
+          backgroundColor: ['#ff00005b'],
+          borderWidth: ['6px', '15px'],
+          borderColor: ['#ff0000', '#8b0000'],
+          boxShadow: [
+            '0px 0px 30px #ff0000 , inset 0px 0px 30px #ff0000',
+            '0px 0px 50px #8b0000 , inset 0px 0px 50px #8b0000',
+          ],
+          transition: {
+            duration: 0.4,
+            delay: 0.2,
+            repeat: Infinity,
+            repeatType: 'reverse',
+          },
+        });
+      } else {
+        controls.start({
+          backgroundColor: ['#0000ff5b'],
+          borderWidth: ['6px', '15px'],
+          borderColor: ['#0000ff', '#00008b'],
+          boxShadow: [
+            '0px 0px 30px #0000ff , inset 0px 0px 30px #0000ff',
+            '0px 0px 50px #00008b , inset 0px 0px 50px #00008b',
+          ],
+          transition: {
+            duration: 0.4,
+            delay: 0.2,
+            repeat: Infinity,
+            repeatType: 'reverse',
+          },
+        });
+      }
+    }
+  }, [G.round.winner, myID, controls]);
+
   return (
-    <motion.div ref={boardRef} className={`card-board`}>
+    <motion.div
+      ref={boardRef}
+      animate={controls}
+      className={`card-board ${isWinner ? 'winner' : ''}`}
+    >
       {submitBoxPosition && (
         <SubmitBox
           submitBoxPosition={submitBoxPosition}

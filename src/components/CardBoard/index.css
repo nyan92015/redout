@@ -1,8 +1,8 @@
 .card-board {
   border: 6px solid #ffffff;
   box-shadow:
-    0px 0px 16px #ffffff,
-    inset 0px 0px 16px #ffffff;
+    -3px 3px 30px #ffffff,
+    inset 0px 0px 30px #ffffff;
   height: 64vh;
   width: 38vw;
   background-color: #2c2c2c;

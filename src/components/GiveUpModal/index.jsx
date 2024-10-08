@@ -2,7 +2,7 @@ import React from 'react';
 import Button from '../Button';
 import { motion } from 'framer-motion';
 import './index.css';
-const GiveUp = ({ backToLobby, handleClose }) => {
+const GiveUpModal = ({ backToLobby, handleClose }) => {
   return (
     <motion.div
       className="giveup"
@@ -27,4 +27,4 @@ const GiveUp = ({ backToLobby, handleClose }) => {
   );
 };
 
-export default GiveUp;
+export default GiveUpModal;

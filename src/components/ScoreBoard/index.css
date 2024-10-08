@@ -1,0 +1,7 @@
+.score-board {
+  display: flex;
+  font-size: 100px;
+  text-shadow: 0 0 20px #ffffff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  gap: 100px;
+}

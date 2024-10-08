@@ -9,15 +9,17 @@ import {
 } from '../../services/matchService';
 import { useNavigate } from 'react-router-dom';
 import CancelButton from '../CancelButton.jsx';
-import { motion } from 'framer-motion';
+import { motion, useAnimation } from 'framer-motion';
 
 import './index.css';
 import useLocalStorage from '../../hooks/useLocalStorage.js';
 import Modal from '../Modal/index.jsx';
 import useModal from '../../hooks/useModal.jsx';
-import GiveUp from '../GiveUp/index.jsx';
+import GiveUpModal from '../GiveUpModal/index.jsx';
 import FlagButton from '../FlagButton/index.jsx';
 import CardBoard from '../CardBoard/index.jsx';
+import ScoreBoard from '../ScoreBoard/index.jsx';
+import GameSetModal from '../GameSetModal/index.jsx';
 export function TicTacToeBoard({
   ctx,
   G,
@@ -130,6 +132,7 @@ export function TicTacToeBoard({
   }, []);
 
   const { modalOpen, close, open } = useModal();
+
   return (
     <motion.div
       className="board-container"
@@ -140,17 +143,13 @@ export function TicTacToeBoard({
     >
       {matchDetails.enemyName ? (
         <div className="board">
-          <div className="test">
-            <div className="my-score">
-              {G.playerData[matchDetails.myID].roundCard &&
-                `${matchDetails.playerName} : set`}
-            </div>
-            <div className="enemy-score">
-              {G.playerData[matchDetails.enemyID].roundCard &&
-                `${matchDetails.enemyName} : set`}
-            </div>
-            <div className="my-score">{`${matchDetails.playerName} : ${G.playerData[matchDetails.myID].score}`}</div>
-            <div className="enemy-score">{`${matchDetails.enemyName} : ${G.playerData[matchDetails.enemyID].score}`}</div>
+          <div className="score-board">
+            <ScoreBoard
+              G={G}
+              moves={moves}
+              myID={matchDetails.myID}
+              enemyID={matchDetails.enemyID}
+            />
           </div>
           <div className="card-board-container">
             <CardBoard
@@ -171,18 +170,22 @@ export function TicTacToeBoard({
           </div>
 
           {ctx.gameover && (
-            <div className="game-over">
-              Game Over!
-              {ctx.gameover.winner === matchDetails.myID
-                ? matchDetails.playerName
-                : matchDetails.enemyName}
-              wins!
-            </div>
+            <Modal handleClose={backToLobby}>
+              <GameSetModal
+                isWin={ctx.gameover.winner === matchDetails.myID}
+                winnerName={
+                  ctx.gameover.winner === matchDetails.myID
+                    ? matchDetails.playerName
+                    : matchDetails.enemyName
+                }
+                onClick={backToLobby}
+              />
+            </Modal>
           )}
           <FlagButton onClick={open} />
           {modalOpen && (
             <Modal handleClose={close}>
-              <GiveUp backToLobby={backToLobby} handleClose={close} />
+              <GiveUpModal backToLobby={backToLobby} handleClose={close} />
             </Modal>
           )}
         </div>

@@ -40,6 +40,7 @@ function dealHands({ G }) {
 
 function playCard({ G }, cardID, cardName, playerID) {
   G.playerData[playerID].isWaiting = true;
+  G.next = 'judge';
   G.playerData[playerID].roundCardID = cardID;
   G.playerData[playerID].roundCard = cardName;
 }
@@ -76,7 +77,7 @@ function endPhase({ events }) {
 function reset({ G, events }) {
   judgeWinner(G, events);
   deleteCard(G);
-  G.round.winner = null;
+  G.round.winner = 0;
 }
 
 function judgeRoundWinner({ G }) {
@@ -109,7 +110,10 @@ function judgeRoundWinner({ G }) {
   } else if (winner === 2) {
     G.playerData[1].score += 1;
   }
+  G.playerData[0].isWaiting = true;
+  G.playerData[1].isWaiting = true;
   G.round.winner = winner;
+  G.next = 'resolve';
 }
 
 function unlockWaiting({ G }, playerID) {
@@ -121,7 +125,7 @@ export const RedOut = {
   setup: () => ({
     message: Array(2).fill(null),
     round: {
-      winner: null,
+      winner: 0,
     },
     cardCount: 10,
     playerData: Array.from({ length: 2 }, (_, index) => ({
@@ -131,6 +135,7 @@ export const RedOut = {
       score: 0,
       isWaiting: true,
     })),
+    next: '',
   }),
   phases: {
     draw: {
@@ -163,9 +168,13 @@ export const RedOut = {
     judge: {
       onBegin: judgeRoundWinner,
       endIf: ({ G }) => {
-        return G.round.winner;
+        return (
+          G.round.winner &&
+          G.playerData[0].isWaiting &&
+          G.playerData[1].isWaiting
+        );
       },
-      next: 'resolve',
+      next: 'waiting',
     },
 
     resolve: {
@@ -191,7 +200,9 @@ export const RedOut = {
       endIf: ({ G }) => {
         return !G.playerData[0].isWaiting && !G.playerData[1].isWaiting;
       },
-      next: 'judge',
+      next: ({ G }) => {
+        return G.next ? G.next : 'draw';
+      },
     },
   },
 };
