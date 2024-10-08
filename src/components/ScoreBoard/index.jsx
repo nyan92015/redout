@@ -7,7 +7,6 @@ const ScoreBoard = ({ G, moves, myID, enemyID }) => {
   const enemyScoreControls = useAnimation();
 
   const handleAnimationComplete = () => {
-    console.log(myID);
     moves.unlockWaiting(myID);
   };
 
@@ -15,16 +14,16 @@ const ScoreBoard = ({ G, moves, myID, enemyID }) => {
     if (G.round.winner === 3) handleAnimationComplete();
     if (G.round.winner === myID + 1) {
       myScoreControls.start({
-        scale: [1, 1.3, 1], // 拡大してから元のサイズに戻る
-        transition: { duration: 1.0, delay: 0.6, repeat: 0 },
+        scale: [1, 1.3, 1],
+        transition: { duration: 0.8, delay: 0, repeat: 2 },
       });
     } else if (G.round.winner === enemyID + 1) {
       enemyScoreControls.start({
         scale: [1, 1.3, 1], // 拡大してから元のサイズに戻る
-        transition: { duration: 1.0, delay: 0.6, repeat: 0 },
+        transition: { duration: 0.8, delay: 0, repeat: 2 },
       });
     }
-  }, [G, myScoreControls, enemyScoreControls]);
+  }, [G.round.winner, myScoreControls, enemyScoreControls]);
 
   return (
     <div style={{ textAlign: 'center' }}>
