@@ -4,6 +4,7 @@ import { RedOut } from '../components/Game';
 import { TicTacToeBoard } from '../components/Board';
 import { SERVER_URL } from '../config';
 import { Client } from 'boardgame.io/react';
+import { Debug } from 'boardgame.io/debug';
 import { SocketIO } from 'boardgame.io/multiplayer';
 import { Match } from '../App';
 import { useNavigate } from 'react-router-dom';
