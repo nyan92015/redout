@@ -185,7 +185,7 @@ export const RedOut = {
     },
 
     resolve: {
-      moves: {reset, giveUp},
+      moves: { reset, giveUp },
       onBegin: reset,
       endIf: ({ G }) => {
         if (
