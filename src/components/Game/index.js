@@ -30,7 +30,6 @@ function initializeHand(playerID) {
 }
 
 function dealHands({ G }) {
-  console.log(G, 'aaa');
   // 手札が空なら配り直す
   if (G.cardCount === 0) {
     G.playerData[0].hands = initializeHand(0);
@@ -146,6 +145,7 @@ export const RedOut = {
   phases: {
     draw: {
       start: true,
+      moves: {dealHands, giveUp},
       onBegin: dealHands,
       endIf: ({ G }) => {
         return G.cardCount > 0;
@@ -172,6 +172,7 @@ export const RedOut = {
     },
 
     judge: {
+      moves: {judgeRoundWinner, giveUp},
       onBegin: judgeRoundWinner,
       endIf: ({ G }) => {
         return (
@@ -184,6 +185,7 @@ export const RedOut = {
     },
 
     resolve: {
+      moves: {reset, giveUp},
       onBegin: reset,
       endIf: ({ G }) => {
         if (
