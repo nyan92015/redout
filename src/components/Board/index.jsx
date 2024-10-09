@@ -205,7 +205,7 @@ export function TicTacToeBoard({
           />
         </>
       )}
-      <Toaster position="top-center" richColors />
+      <Toaster position="bottom-right" richColors />
     </motion.div>
   );
 }

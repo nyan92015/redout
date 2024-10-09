@@ -40,7 +40,6 @@ function dealHands({ G }) {
 
 function playCard({ G }, cardID, cardName, playerID) {
   G.playerData[playerID].isWaiting.playPhase = true;
-  G.next = 'judge';
   G.playerData[playerID].roundCardID = cardID;
   G.playerData[playerID].roundCard = cardName;
 }
@@ -173,13 +172,11 @@ export const RedOut = {
       next: 'waitingPlayPhase',
     },
     judge: {
-      moves: {judgeRoundWinner, giveUp},
+      moves: {judgeRoundWinner, unlockJudgePhaseWaiting, giveUp},
       onBegin: judgeRoundWinner,
       endIf: ({ G }) => {
         return (
-          G.round.winner &&
-          G.playerData[0].isWaiting &&
-          G.playerData[1].isWaiting
+          G.round.winner 
         );
       },
       next: 'waitingJudgePhase',
