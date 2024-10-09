@@ -7,7 +7,7 @@ const ScoreBoard = ({ G, moves, myID, enemyID }) => {
   const enemyScoreControls = useAnimation();
 
   const handleAnimationComplete = () => {
-    moves.unlockWaiting(myID);
+    moves.unlockJudgePhaseWaiting(myID);
   };
 
   useEffect(() => {

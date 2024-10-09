@@ -39,8 +39,7 @@ function dealHands({ G }) {
 }
 
 function playCard({ G }, cardID, cardName, playerID) {
-  G.playerData[playerID].isWaiting = true;
-  G.playCardCount += 1;
+  G.playerData[playerID].isWaiting.playPhase = true;
   G.next = 'judge';
   G.playerData[playerID].roundCardID = cardID;
   G.playerData[playerID].roundCard = cardName;
@@ -107,22 +106,24 @@ function judgeRoundWinner({ G }) {
   } else if (winner === 2) {
     G.playerData[1].score += 1;
   }
-  G.playerData[0].isWaiting = true;
-  G.playerData[1].isWaiting = true;
+  G.playerData[0].isWaiting.judgePhase = true;
+  G.playerData[1].isWaiting.judgePhase = true;
   G.round.winner = winner;
-  G.next = 'resolve';
 }
 
 function giveUp({ events }, playerID) {
   events.endGame({ winner: playerID });
 }
 
-function unlockWaiting({ G }, playerID) {
-  G.playerData[playerID].isWaiting = false;
+function unlockPlayPhaseWaiting({ G }, playerID) {
+  G.playerData[playerID].isWaiting.playPhase = false;
 }
-function checkWaiting({ G, events }) {
-  if (!G.playerData[0].isWaiting && !G.playerData[1].isWaiting)
-    events.endPhase();
+function unlockJudgePhaseWaiting({ G }, playerID) {
+  G.playerData[playerID].isWaiting.judgePhase = false;
+}
+
+function log({ G }) {
+  console.log(G.playerData[0].isWaiting.judgePhase, G.playerData[1].isWaiting.judgePhase, "aaa");
 }
 
 export const RedOut = {
@@ -138,10 +139,11 @@ export const RedOut = {
       roundCardID: null,
       roundCard: null,
       score: 0,
-      isWaiting: false,
+      isWaiting: {
+        playPhase: false,
+        judgePhase: false
+      },
     })),
-    next: '',
-    playCardCount: 0
   }),
   phases: {
     draw: {
@@ -153,9 +155,8 @@ export const RedOut = {
       },
       next: 'play',
     },
-
     play: {
-      moves: { playCard, unlockWaiting, giveUp },
+      moves: { playCard, unlockPlayPhaseWaiting, giveUp },
       turn: {
         activePlayers: ActivePlayers.ALL,
       },
@@ -169,9 +170,8 @@ export const RedOut = {
         }
         return false;
       },
-      next: 'waiting',
+      next: 'waitingPlayPhase',
     },
-
     judge: {
       moves: {judgeRoundWinner, giveUp},
       onBegin: judgeRoundWinner,
@@ -182,9 +182,8 @@ export const RedOut = {
           G.playerData[1].isWaiting
         );
       },
-      next: 'waiting',
+      next: 'waitingJudgePhase',
     },
-
     resolve: {
       moves: { reset, giveUp },
       onBegin: reset,
@@ -201,16 +200,26 @@ export const RedOut = {
       },
       next: 'draw',
     },
-    waiting: {
-      moves: { unlockWaiting, checkWaiting, giveUp },
+    waitingPlayPhase: {
+      moves: { unlockPlayPhaseWaiting , giveUp },
       turn: {
         activePlayers: ActivePlayers.ALL,
       },
-      onBegin: checkWaiting,
       endIf: ({ G }) => {
-        return !G.playerData[0].isWaiting && !G.playerData[1].isWaiting;
+        return !G.playerData[0].isWaiting.playPhase && !G.playerData[1].isWaiting.playPhase;
       },
-      next: ({ G }) => G.next || 'draw',
+      next: 'judge',
+    },
+    waitingJudgePhase: {
+      moves: { unlockJudgePhaseWaiting, giveUp, log },
+      onBegin: log,
+      turn: {
+        activePlayers: ActivePlayers.ALL,
+      },
+      endIf: ({ G }) => {
+        return !G.playerData[0].isWaiting.judgePhase && !G.playerData[1].isWaiting.judgePhase;
+      },
+      next: 'resolve',
     },
   },
 };

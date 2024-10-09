@@ -12,11 +12,10 @@ const Card = ({
   cardID,
   playerID,
   boardID,
-  isSubmit,
   moves,
 }) => {
   const handleAnimationComplete = () => {
-     moves.unlockWaiting(playerID);
+     moves.unlockPlayPhaseWaiting(playerID);
   };
   const handleCardPlay = () => {
     if(boardID === 0) moves.playCard(cardID, cardName, playerID);
@@ -36,11 +35,11 @@ const Card = ({
       initial: {
         opacity: boardID === 0 ? 1 : 0,
         x:
-          boardID === 0 || isSubmit
+          boardID === 0
             ? cardPosition.x - submitBoxPosition.x
             : (submitBoxSize - cardSize) / 2 - 5,
         y:
-          boardID === 0 || isSubmit
+          boardID === 0
             ? cardPosition.y - submitBoxPosition.y
             : (submitBoxSize - cardSize) / 2 - 5,
       },

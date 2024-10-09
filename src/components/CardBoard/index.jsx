@@ -223,7 +223,6 @@ const CardBoard = ({ G, moves, myID, enemyID, boardID }) => {
                     playerID={myID}
                     boardID={boardID}
                     isSubmit={isMyCardSubmit && isEnemyCardSubmit}
-                    G={G}
                     moves={moves}
                   />
                 );
@@ -256,7 +255,6 @@ const CardBoard = ({ G, moves, myID, enemyID, boardID }) => {
               cardID={card.id}
               playerID={myID}
               boardID={boardID}
-              G={G}
               moves={moves}
             />
           );
